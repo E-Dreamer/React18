@@ -28,7 +28,10 @@
     "start": "craco start",
     "build": "craco build",
     "test": "craco test",
-    "eject": "craco eject"
+    "eject": "craco eject",
+    "lint": "eslint --fix --ext .js,.ts,.tsx ./src",
+    "prepare": "husky install",
+    "fix": "eslint src/**/*.{js,vue} --fix"
   },
   "eslintConfig": {
     "extends": [
