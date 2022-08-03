@@ -1,15 +1,19 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2022-08-03 14:40:05
- * @LastEditTime: 2022-08-03 14:55:55
+ * @LastEditTime: 2022-08-03 15:50:14
  * @LastEditors: E-Dreamer
  * @Description: 
  */
-import { Form, Input, Button,message } from 'antd'
+import { Form, Input, Button, message } from 'antd'
 import { UserOutlined, LockOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import { useState } from 'react';
-import {HOME_URL} from '@/config/index'
+import { HOME_URL } from '@/config/index'
 import { useNavigate } from 'react-router-dom';
+import http from '@/api'
+const loginApi = (params: Login.ReqLoginForm) => {
+  return http.post<Login.ResLogin>(`/login`, params);
+}
 // * 登录
 export namespace Login {
   export interface ReqLoginForm {
@@ -23,7 +27,7 @@ export namespace Login {
     [propName: string]: any;
   }
 }
-const LoginForm = (props:any) => {
+const LoginForm = (props: any) => {
   const { setToken, setTabsList } = props;
   const [form] = Form.useForm();
   const [loading, setLoading] = useState<boolean>(false);
@@ -31,17 +35,22 @@ const LoginForm = (props:any) => {
 
   const onFinish = async (LoginForm: Login.ReqLoginForm) => {
     try {
-			setLoading(true);
-			// loginForm.password = md5(loginForm.password);
-			const { data } = await loginApi(loginForm);
-			setToken(data?.access_token);
-			setTabsList([]);
-			message.success("登录成功！");
-			navigate(HOME_URL);
-		} finally {
-			setLoading(false);
-		}
+      setLoading(true);
+      // loginForm.password = md5(loginForm.password);
+      const { data } = await loginApi(LoginForm);
+      setToken(data?.access_token);
+      setTabsList([]);
+      message.success("登录成功！");
+      navigate(HOME_URL);
+    } finally {
+      setLoading(false);
+    }
   }
+
+  const onFinishFailed = (errorInfo: any) => {
+		console.log("Failed:", errorInfo);
+	};
+  
   return <Form
     form={form}
     name="basic"

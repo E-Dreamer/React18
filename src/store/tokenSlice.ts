@@ -1,12 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 // Define a type for the slice state
-interface CounterState {
+interface State {
   token: string
 }
 
 // Define the initial state using that type
-const initialState: CounterState = {
+const initialState: State = {
   token: ''
 }
 

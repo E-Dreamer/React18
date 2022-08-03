@@ -1,7 +1,7 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2022-08-03 14:58:00
- * @LastEditTime: 2022-08-03 15:37:58
+ * @LastEditTime: 2022-08-03 16:10:01
  * @LastEditors: E-Dreamer
  * @Description: 
  */
@@ -9,9 +9,11 @@ import axios, { AxiosInstance, AxiosRequestConfig, AxiosError, AxiosResponse } f
 import { AxiosCanceler } from './helper/axiosCancel'
 import { message } from 'antd'
 import NProgress from './helper/nprogress'
+import { checkStatus } from "./helper/checkStatus";
 import { ResultEnum } from '@/utils/httpEnum'
 import store from '@/store/index'
-import {tryHideFullScreenLoading,showFullScreenLoading} from '@/components/Loading/serviceLoading'
+import { setToken } from "@/store/tokenSlice";
+import { tryHideFullScreenLoading, showFullScreenLoading } from '@/components/Loading/serviceLoading'
 const axiosCanceler = new AxiosCanceler();
 
 const config = {
@@ -65,6 +67,7 @@ class RequestHttp {
       axiosCanceler.removePending(config)
       tryHideFullScreenLoading();
       // * 登录失效（code == 599）
+      // eslint-disable-next-line eqeqeq
       if (data.code == ResultEnum.OVERDUE) {
         store.dispatch(setToken(""));
         message.error(data.msg);
@@ -97,14 +100,14 @@ class RequestHttp {
     return this.service.get(url, { params, ..._object });
   }
   post<T>(url: string, params?: object, _object = {}): Promise<ResultData<T>> {
-		return this.service.post(url, params, _object);
-	}
-	put<T>(url: string, params?: object, _object = {}): Promise<ResultData<T>> {
-		return this.service.put(url, params, _object);
-	}
-	delete<T>(url: string, params?: any, _object = {}): Promise<ResultData<T>> {
-		return this.service.delete(url, { params, ..._object });
-	}
+    return this.service.post(url, params, _object);
+  }
+  put<T>(url: string, params?: object, _object = {}): Promise<ResultData<T>> {
+    return this.service.put(url, params, _object);
+  }
+  delete<T>(url: string, params?: any, _object = {}): Promise<ResultData<T>> {
+    return this.service.delete(url, { params, ..._object });
+  }
 }
 
 export default new RequestHttp(config);

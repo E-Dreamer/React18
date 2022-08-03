@@ -1,26 +1,27 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2022-08-02 14:22:39
- * @LastEditTime: 2022-08-03 14:39:19
+ * @LastEditTime: 2022-08-03 17:04:02
  * @LastEditors: E-Dreamer
  * @Description: 
  */
 import loginLeft from "@/assets/images/login_left.png";
 import logo from "@/assets/images/logo.png";
-import style from './index.module.scss'
+import './index.scss'
+import LoginForm from "./components/LoginForm";
 export default function Login() {
-  return <div className={style.login_container}>
-  <div className={style.login_box}>
-    <div className={style.login_left}>
-      <img src={loginLeft} alt="login" />
-    </div>
-    <div className={style.login_form}>
-      <div className={style.login_logo}>
-        <img className={style.login_icon} src={logo} alt="logo" />
-        <span className={style.logo_text}>后台管理系统</span>
+  return <div className="login-container">
+    <div className="login-box">
+      <div className="login-left">
+        <img src={loginLeft} alt="login" />
       </div>
-      {/* <LoginForm /> */}
+      <div className="login-form">
+        <div className="login-logo">
+          <img className="login-icon" src={logo} alt="logo" />
+          <span className="logo-text">Hooks-Admin</span>
+        </div>
+        <LoginForm />
+      </div>
     </div>
   </div>
-</div>
 }
