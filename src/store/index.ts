@@ -1,16 +1,16 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2022-08-03 10:30:14
- * @LastEditTime: 2022-08-03 10:51:46
+ * @LastEditTime: 2022-08-03 15:42:21
  * @LastEditors: E-Dreamer
  * @Description: 
  */
 import { configureStore } from "@reduxjs/toolkit";
 
-import counterReducer from "./counterSlice";
+import tokenReducer from "./tokenSlice";
 const store =  configureStore({
   reducer: {
-    counter: counterReducer
+    counter: tokenReducer
   }
 })
 export default store

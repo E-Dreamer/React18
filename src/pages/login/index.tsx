@@ -1,7 +1,7 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2022-08-02 14:22:39
- * @LastEditTime: 2022-08-03 14:15:58
+ * @LastEditTime: 2022-08-03 14:39:19
  * @LastEditors: E-Dreamer
  * @Description: 
  */
@@ -17,7 +17,7 @@ export default function Login() {
     <div className={style.login_form}>
       <div className={style.login_logo}>
         <img className={style.login_icon} src={logo} alt="logo" />
-        <span className={style.logo_text}>Hooks-Admin</span>
+        <span className={style.logo_text}>后台管理系统</span>
       </div>
       {/* <LoginForm /> */}
     </div>
