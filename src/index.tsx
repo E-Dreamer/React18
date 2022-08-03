@@ -6,6 +6,11 @@ import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import store from '@/store/index'
 
+//开发环境下引入mock
+if(process.env.NODE_ENV === 'development'){
+  require('./mock/data')
+}
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );

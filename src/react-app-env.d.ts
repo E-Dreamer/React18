@@ -2,3 +2,4 @@
 
 declare module '*.scss';
 declare module 'nprogress'
+declare module 'mockjs'

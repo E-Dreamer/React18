@@ -1,6 +1,6 @@
-import { Mock } from 'mockjs';
+import Mock from 'mockjs';
 
-const data = Mock.mock('/list', 'get', {
+const data = Mock.mock('/api/list', 'get', {
   success: true,
   message: '成功',
   // 属性 list 的值是一个数组，其中含有 1 到 5 个元素
