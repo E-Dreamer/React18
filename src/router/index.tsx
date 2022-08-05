@@ -1,7 +1,7 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2022-08-03 11:01:46
- * @LastEditTime: 2022-08-05 10:25:10
+ * @LastEditTime: 2022-08-05 11:51:17
  * @LastEditors: E-Dreamer
  * @Description: 
  */
@@ -16,10 +16,6 @@ const Home = React.lazy(() => import('@/pages/home'))
 const NoFound = React.lazy(() => import('@/pages/404'))
 const Ceshi = React.lazy(() => import('@/pages/ceshi'))
 export const rootRouter: RouteObject[] = [
-  {
-    path: '/',
-    element: <Navigate to='/login' />
-  },
   {
     path: '/login',
     element: <Login />,

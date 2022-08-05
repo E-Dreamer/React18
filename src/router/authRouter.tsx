@@ -1,7 +1,7 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2022-08-04 11:21:39
- * @LastEditTime: 2022-08-05 10:27:30
+ * @LastEditTime: 2022-08-05 11:47:23
  * @LastEditors: E-Dreamer
  * @Description: 
  */
@@ -10,22 +10,36 @@ import { useLocation, Navigate } from "react-router-dom";
 import { rootRouter } from '@/router/index'
 import { searchRoute } from "@/utils";
 import store from "@/store";
-// import { HOME_URL } from "@/config";
+import { HOME_URL } from "@/config";
 
+const toLogin = ()=>{
+  return <Navigate to='/login' replace />
+}
+const toHome = ()=>{
+  return <Navigate to={HOME_URL} replace />
+}
 const axiosCanceler = new AxiosCanceler();
 const AuthRouter = (props: { children: JSX.Element }) => {
   const { pathname } = useLocation()
+
+  const token = store.getState().global.token
+  // * 处理 / 是跳login 还是home
+  if (pathname === '/') {
+    return token ? toHome() : toLogin()
+  }
+  if(pathname === '/login' && token){
+    return toHome()
+  }
   const route = searchRoute(pathname, rootRouter)
 
   // * 判断当前路由是否需要访问权限(不需要权限直接放行)
   if (!route.meta?.requiresAuth) return props.children;
 
   // * 判断是否有Token
-  const token = store.getState().global.token
   if (!token) {
     // * 在跳转路由之前，清除所有的请求
     axiosCanceler.removeAllPending();
-    return <Navigate to="/login" replace />
+    return toLogin()
   }
   // * Dynamic Router(动态路由，根据后端返回的菜单数据生成的一维数组)
   // const dynamicRouter = store.getState().global.authRouter;
