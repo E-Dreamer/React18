@@ -1,14 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
+import "@/assets/iconfont/iconfont.scss";
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
-import store from '@/store/index'
+import store, { persistor } from '@/store/index'
+import { PersistGate } from 'redux-persist/integration/react';
 
 //开发环境下引入mock
-if(process.env.NODE_ENV === 'development'){
-  require('./mock/data')
+if (process.env.NODE_ENV === 'development') {
+  require('./mock')
 }
 
 const root = ReactDOM.createRoot(
@@ -18,7 +20,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <PersistGate persistor={persistor}>
+        <App />
+      </PersistGate>
     </Provider>
   </React.StrictMode>
 );

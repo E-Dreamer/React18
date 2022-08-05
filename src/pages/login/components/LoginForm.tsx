@@ -1,7 +1,7 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2022-08-03 14:40:05
- * @LastEditTime: 2022-08-03 15:50:14
+ * @LastEditTime: 2022-08-05 10:02:27
  * @LastEditors: E-Dreamer
  * @Description: 
  */
@@ -10,36 +10,25 @@ import { UserOutlined, LockOutlined, CloseCircleOutlined } from "@ant-design/ico
 import { useState } from 'react';
 import { HOME_URL } from '@/config/index'
 import { useNavigate } from 'react-router-dom';
-import http from '@/api'
-const loginApi = (params: Login.ReqLoginForm) => {
-  return http.post<Login.ResLogin>(`/login`, params);
-}
-// * 登录
-export namespace Login {
-  export interface ReqLoginForm {
-    username: string;
-    password: string;
-  }
-  export interface ResLogin {
-    access_token: string;
-  }
-  export interface ResAuthButtons {
-    [propName: string]: any;
-  }
-}
-const LoginForm = (props: any) => {
-  const { setToken, setTabsList } = props;
+import { Login } from '@/config/interface';
+import { loginApi } from '@/api/modules/login'
+import { setToken } from '@/store/global';
+import { setTabsList } from '@/store/tabs';
+import { useDispatch } from 'react-redux';
+
+const LoginForm = () => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate()
-
+  const dispatch = useDispatch()
   const onFinish = async (LoginForm: Login.ReqLoginForm) => {
     try {
       setLoading(true);
       // loginForm.password = md5(loginForm.password);
       const { data } = await loginApi(LoginForm);
-      setToken(data?.access_token);
-      setTabsList([]);
+      dispatch(setToken(data?.access_token));
+      data?.access_token && localStorage.setItem('token', data?.access_token)
+      dispatch(setTabsList([]));
       message.success("登录成功！");
       navigate(HOME_URL);
     } finally {
@@ -48,9 +37,9 @@ const LoginForm = (props: any) => {
   }
 
   const onFinishFailed = (errorInfo: any) => {
-		console.log("Failed:", errorInfo);
-	};
-  
+    console.log("Failed:", errorInfo);
+  };
+
   return <Form
     form={form}
     name="basic"
