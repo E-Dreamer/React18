@@ -1,7 +1,7 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2022-08-04 16:07:37
- * @LastEditTime: 2022-08-04 16:58:48
+ * @LastEditTime: 2022-08-05 15:29:13
  * @LastEditors: E-Dreamer
  * @Description: 
  */
@@ -77,4 +77,5 @@ const Theme = (props: any) => {
 
 const mapStateToProps = (state: any) => state.global;
 const mapDispatchToProps = { setWeakOrGray };
+//两种方式获取 store state 该种方式props中可以获取
 export default connect(mapStateToProps, mapDispatchToProps)(Theme);

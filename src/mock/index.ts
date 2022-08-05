@@ -1,5 +1,5 @@
 import Mock from 'mockjs';
-
+import { LAYOUT_KEY } from '@/config';
 // 列表查询
 const list = Mock.mock('/api/list', 'get', {
   success: true,
@@ -52,6 +52,45 @@ const menu = Mock.mock('/api/menu', 'get', {
   ]
 })
 
+
+const routes = Mock.mock('/api/AllRoutes','get',{
+  success:true,
+  message:'成功',
+  data:[
+    {
+      path: '/home',
+      icon: 'HomeOutlined',
+      title: '首页',
+      show:true,
+      components:'/home/index.tsx',
+      parent:LAYOUT_KEY
+    },
+    {
+      path:'/ceshi',
+      icon:'DropboxOutlined',
+      show:true,
+      components:'/ceshi/index.tsx',
+      parent:LAYOUT_KEY,
+      title:'测试'
+    },
+    {
+      children: [
+        {
+          show:true,
+          icon: "AppstoreOutlined",
+          isLink: "https://github.com/HalseySpicy/Hooks-Admin",
+          path: "",
+          title: "GitHub 仓库",
+        }
+      ],
+      icon: "PaperClipOutlined",
+      path: "/link",
+      title: "外部链接",
+      parent:LAYOUT_KEY,
+      show:true
+    }
+  ]
+})
 const buttons = Mock.mock('/api/auth/buttons','get',{
   success: true,
   message: '成功',
@@ -66,7 +105,8 @@ const data = [
   list,
   login,
   menu,
-  buttons
+  buttons,
+  routes
 ]
 
 export default data

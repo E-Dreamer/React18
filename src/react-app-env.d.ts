@@ -24,3 +24,15 @@ declare namespace Menu {
 		children?: MenuOptions[];
 	}
 }
+// 后台返回的路由数据
+declare namespace BackStageRoute {
+  interface RouteOptions {
+    path: string;
+		title: string;
+		icon?: string;
+		isLink?: string;
+    show?:boolean;
+    children?: RouteOptions[];
+    parent?:string,
+  }
+}

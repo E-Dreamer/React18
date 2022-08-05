@@ -7,6 +7,7 @@ import Router from '@/router'
 import { useSelector } from 'react-redux';
 import { RootState } from './store';
 import useTheme from './hooks/useTheme';
+// import { getAllRouter } from './store/global';
 // import zhCN from "antd/lib/locale/zh_CN";
 // import enUS from "antd/lib/locale/en_US";
 // import { setLanguage } from './store/global';
@@ -17,7 +18,6 @@ function App() {
   const { themeConfig } = global;
   const { weakOrGray } = themeConfig;
   // const [i18nLocale, setI18nLocale] = useState(zhCN);
-  
   // 全局使用主题
 	useTheme(weakOrGray);
 

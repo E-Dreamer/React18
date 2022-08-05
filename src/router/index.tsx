@@ -1,7 +1,7 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2022-08-03 11:01:46
- * @LastEditTime: 2022-08-05 11:51:17
+ * @LastEditTime: 2022-08-05 14:50:04
  * @LastEditors: E-Dreamer
  * @Description: 
  */
@@ -10,11 +10,12 @@ import { RouteObject } from '@/config/interface';
 import { Navigate, useRoutes } from "react-router-dom";
 import React from 'react'
 import LayoutIndex from '@/layout';
+import { useSelector } from 'react-redux';
 
 const Login = React.lazy(() => import('@/pages/login'))
 const Home = React.lazy(() => import('@/pages/home'))
 const NoFound = React.lazy(() => import('@/pages/404'))
-const Ceshi = React.lazy(() => import('@/pages/ceshi'))
+// const Ceshi = React.lazy(() => import('@/pages/ceshi'))
 export const rootRouter: RouteObject[] = [
   {
     path: '/login',
@@ -37,15 +38,6 @@ export const rootRouter: RouteObject[] = [
           key: "home"
         }
       },
-      {
-        path: '/ceshi',
-        element: <Ceshi />,
-        meta: {
-          requiresAuth: true,
-          title: "测试",
-          key: "ceshi"
-        }
-      }
     ]
   },
   {
@@ -63,19 +55,10 @@ export const rootRouter: RouteObject[] = [
   }
 ]
 const Router = () => {
-  const routes = useRoutes(rootRouter);
+  const allRoutes = useSelector((state:any)=> state.global.allRouter)
+  const arr = [...allRoutes,...rootRouter]
+  // const routes = useRoutes(rootRouter);
+  const routes = useRoutes(arr);
   return routes
-  // const token = getToken()
-  // const isLoginOrHome = () => {
-  //  return token ? <Navigate to='/login' replace /> : <Navigate to='/home' replace />
-  // }
-  // return (
-  //   <>
-  //     <Routes>
-  //       <Route path='/' element={isLoginOrHome()} />
-  //     </Routes>
-  //     {routes}
-  //   </>
-  // )
 };
 export default Router
