@@ -1,7 +1,6 @@
 import { RouteObject } from '@/config/interface';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { SizeType } from 'antd/lib/config-provider/SizeContext';
-// import { getRoutes } from '@/api/modules/menu'
 /* themeConfigProp */
 export interface ThemeConfigProp {
   primary: string;
@@ -40,16 +39,15 @@ const initialState: State = {
     weakOrGray: ""
   }
 }
-
-// export const fetchAllRouters = createAsyncThunk('global/fetchAllRouters', async () => {
-//   try {
-//     let { data } = await getRoutes()
-//     return data;
-//   } catch (err) {
-//     console.log(err);
-//     return false;
-//   }
-// })
+export const fetchAllRouters:any = createAsyncThunk('global/fetchAllRouters', async () => {
+  // try {
+  //   let { data } = await getRoutes()
+  //   return data;
+  // } catch (err) {
+  //   console.log(err);
+  //   return false;
+  // }
+})
 const tokenSlice = createSlice({
   name: 'global',
   initialState,
@@ -80,13 +78,13 @@ const tokenSlice = createSlice({
     }
   },
   extraReducers: {
-    // [fetchAllRouters.fulfilled](state, { payload }) {
-    //   console.log('成功了 获取后台路由');
-    //   state.allRouter = payload;
-    // },
-    // [fetchAllRouters.rejected](err){
-    //   console.log(err);
-    // }
+    [fetchAllRouters.fulfilled](state, { payload }) {
+      console.log('成功了 获取后台路由');
+      state.allRouter = payload;
+    },
+    [fetchAllRouters.rejected](err){
+      console.log(err);
+    }
   }
 })
 

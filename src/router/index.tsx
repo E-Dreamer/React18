@@ -1,16 +1,14 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2022-08-03 11:01:46
- * @LastEditTime: 2022-08-08 09:30:49
+ * @LastEditTime: 2022-08-08 13:54:53
  * @LastEditors: E-Dreamer
  * @Description: 
  */
 import { RouteObject } from '@/config/interface';
-//  Route, Routes,
 import { Navigate, useRoutes } from "react-router-dom";
 import React from 'react'
 import LayoutIndex from '@/layout';
-import { useSelector } from 'react-redux';
 import { LAYOUT_KEY } from '@/config';
 
 const Login = React.lazy(() => import('@/pages/login'))
@@ -20,7 +18,7 @@ const Ceshi = React.lazy(() => import('@/pages/ceshi'))
 
 //* 加载组件
 const lazyLoad = (path?: string) => {
-  return path ? React.lazy(() => import(`@/pages/${path}`)) : ''
+  return path ? React.lazy(() => import(`@/pages${path}`)) : ''
 }
 const routeItem = (item: BackStageRoute) => {
   return {

@@ -1,7 +1,7 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2022-08-03 14:58:00
- * @LastEditTime: 2022-08-08 09:24:22
+ * @LastEditTime: 2022-08-08 10:40:44
  * @LastEditors: E-Dreamer
  * @Description: 
  */
@@ -66,7 +66,7 @@ class RequestHttp {
       const { data, config } = response;
       NProgress.done()
       axiosCanceler.removePending(config)
-      // tryHideFullScreenLoading();
+      tryHideFullScreenLoading();
       // * 登录失效（code == 599）
       // eslint-disable-next-line eqeqeq
       if (data.code == ResultEnum.OVERDUE) {

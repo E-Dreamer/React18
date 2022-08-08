@@ -1,11 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-/*
- * @Author: E-Dreamer
- * @Date: 2022-08-04 14:05:00
- * @LastEditTime: 2022-08-04 14:07:55
- * @LastEditors: E-Dreamer
- * @Description: 
- */
+
 interface State {
   isCollapse: boolean;
   menuList: Menu.MenuOptions[];
