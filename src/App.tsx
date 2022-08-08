@@ -1,22 +1,31 @@
 /* eslint-disable eqeqeq */
 import { Suspense, useEffect, useState } from 'react';
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter, RouteObject } from 'react-router-dom'
 import './App.css';
 import { ConfigProvider } from 'antd'
 import AuthRouter from '@/router/authRouter';
-import Router from '@/router'
-import { connect } from 'react-redux';
+import Router, { filterAllRoutes, rootRouter } from '@/router'
+import { useDispatch, useSelector } from 'react-redux';
 import useTheme from './hooks/useTheme';
-import { getBrowserLang } from './utils';
+import { changeRoute, getBrowserLang } from './utils';
 import zhCN from "antd/lib/locale/zh_CN";
 import enUS from "antd/lib/locale/en_US";
-import { setLanguage } from './store/global';
+import { setRouteData, setLanguage, setAllRouter } from './store/global';
+import { getBackRoutes } from './api/modules/menu';
 
-function App(props:any) {
-  const {themeConfig,language,assemblySize} = props;
- 
+function App(props: any) {
+  // const { themeConfig, language, assemblySize, token } = props;
+  const themeConfig = useSelector((state: any) => state.global.themeConfig)
+  const language = useSelector((state: any) => state.global.language)
+  const assemblySize = useSelector((state: any) => state.global.assemblySize)
+  const token = useSelector((state: any) => state.global.token)
+
+  const dispatch = useDispatch()
+
   const { weakOrGray } = themeConfig;
   const [i18nLocale, setI18nLocale] = useState(zhCN);
+
+  const [backRoutes, setBackRoutes] = useState<RouteObject[]>([])
   // 全局使用主题
   useTheme(weakOrGray);
   // 设置 antd 语言国际化
@@ -31,17 +40,35 @@ function App(props:any) {
   useEffect(() => {
     // 全局使用国际化
     // i18n.changeLanguage(language || getBrowserLang());
-    setLanguage(language || getBrowserLang())
+    dispatch(setLanguage(language || getBrowserLang()))
     setAntdLanguage();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [language]);
 
+  const getRoutes = async () => {
+    try {
+      const { data } = await getBackRoutes()
+      if (!data) return;
+      dispatch(setRouteData(data))
+      const result = changeRoute(filterAllRoutes(data))
+      console.log('后端返回的路由: ', result);
+      dispatch(setAllRouter([...result, ...rootRouter]))
+      setBackRoutes(result)
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  // token 改变的时候获取菜单
+  useEffect(() => {
+    token && getRoutes()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [token])
   return (
     <BrowserRouter>
       <Suspense>
         <ConfigProvider locale={i18nLocale} componentSize={assemblySize}>
           <AuthRouter>
-            <Router />
+            <Router backRoutes={backRoutes} />
           </AuthRouter>
         </ConfigProvider>
       </Suspense>
@@ -49,6 +76,4 @@ function App(props:any) {
   );
 }
 
-const mapStateToProps = (state: any) => state.global;
-const mapDispatchToProps = { setLanguage };
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;

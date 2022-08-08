@@ -1,7 +1,7 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2022-08-03 11:01:46
- * @LastEditTime: 2022-08-08 13:54:53
+ * @LastEditTime: 2022-08-08 16:27:07
  * @LastEditors: E-Dreamer
  * @Description: 
  */
@@ -17,12 +17,12 @@ const NoFound = React.lazy(() => import('@/pages/404'))
 const Ceshi = React.lazy(() => import('@/pages/ceshi'))
 
 //* 加载组件
-const lazyLoad = (path?: string) => {
-  return path ? React.lazy(() => import(`@/pages${path}`)) : ''
+const lazyLoad = (path: string) => {
+  return React.lazy(() => import(`@/pages/${path}`))
 }
 const routeItem = (item: BackStageRoute) => {
   return {
-    element: lazyLoad(item.components),
+    element: item.components && React.createElement(lazyLoad(item.components)),
     path: item.path,
     meta: item.meta,
     key: item.meta?.key,
@@ -56,7 +56,7 @@ export function filterAllRoutes(routerList: BackStageRoute[], newArr: any[] = []
       let parent = findCom(newArr, item.parent)
       if (!Object.keys(parent).length) {
         newArr.push({
-          element: item.parent === LAYOUT_KEY ? <LayoutIndex /> : lazyLoad(item.parent),
+          element: item.parent === LAYOUT_KEY ? <LayoutIndex /> :React.createElement(lazyLoad(item.parent)),
           key: item.parent,
           children: []
         })
@@ -120,8 +120,10 @@ export const rootRouter: RouteObject[] = [
     element: <Navigate to="/404" />
   }
 ]
-const Router = () => {
-  const routes = useRoutes(rootRouter);
+const Router = (props: any) => {
+  const { backRoutes } = props;
+  const all = [...backRoutes, ...rootRouter]
+  const routes = useRoutes(all);
   return routes
 };
 export default Router

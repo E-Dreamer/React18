@@ -1,7 +1,7 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2022-08-03 14:40:05
- * @LastEditTime: 2022-08-08 10:54:21
+ * @LastEditTime: 2022-08-08 14:25:25
  * @LastEditors: E-Dreamer
  * @Description: 
  */
@@ -12,10 +12,9 @@ import { HOME_URL } from '@/config/index'
 import { useNavigate } from 'react-router-dom';
 import { Login } from '@/config/interface';
 import { loginApi } from '@/api/modules/login'
-import { setAllRouter, setToken } from '@/store/global';
+import { setToken } from '@/store/global';
 import { setTabsList } from '@/store/tabs';
 import { useDispatch } from 'react-redux';
-import { getBackRoutes } from '@/api/modules/menu';
 
 const LoginForm = () => {
   const [form] = Form.useForm();
@@ -31,9 +30,6 @@ const LoginForm = () => {
       data?.access_token && localStorage.setItem('token', data?.access_token)
       dispatch(setTabsList([]));
       message.success("登录成功！");
-      // 获取后端返回的路由
-      const {data:res} = await getBackRoutes()
-      dispatch(setAllRouter(res))
       navigate(HOME_URL);
     } finally {
       setLoading(false);

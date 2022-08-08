@@ -1,13 +1,14 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2022-08-03 15:09:04
- * @LastEditTime: 2022-08-08 09:11:41
+ * @LastEditTime: 2022-08-08 16:02:14
  * @LastEditors: E-Dreamer
  * @Description: 
  */
 
 import { TOKEN_KEY } from "@/config";
 import { RouteObject } from "@/config/interface";
+import { Menu } from "antd";
 
 /**
  * @description: 判断值是否未某个类型
@@ -47,7 +48,7 @@ export const searchRoute = (path: string, routes: RouteObject[] = []): RouteObje
 export function changeRoute(routeList: any[], newArr: any[] = []): RouteObject[] {
   routeList.forEach(i => {
     newArr.push({
-      children: i.children.length ? changeRoute(i.children, i.children = []) : [],
+      children: i.children.length ? changeRoute(i.children, []) : [],
       element: i.element,
       path: i.path,
       meta: i.meta,
@@ -56,7 +57,25 @@ export function changeRoute(routeList: any[], newArr: any[] = []): RouteObject[]
   })
   return newArr
 }
-
+/**
+ * @description: 将后端给的路由 转成menu菜单用的
+ * @param {any} routeList
+ * @param {any} newArr
+ * @return {*}
+ */
+export function changeMenu(routeList: any[], newArr: any[] = []): Menu.MenuOptions[] {
+  routeList.forEach(i => {
+    if (!i.show) return;
+    newArr.push({
+      children: i?.children?.length ? changeMenu(i.children, []) : [],
+      path: i.path,
+      icon: i.icon,
+      title: i.title || i.meta.title,
+      isLink: i.isLink
+    })
+  })
+  return newArr
+}
 /**
  * @description 获取需要展开的 subMenu
  * @param {String} path 当前访问地址

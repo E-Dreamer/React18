@@ -1,7 +1,7 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2022-08-04 15:02:30
- * @LastEditTime: 2022-08-08 09:37:40
+ * @LastEditTime: 2022-08-08 16:19:52
  * @LastEditors: E-Dreamer
  * @Description: 
  */
@@ -14,10 +14,11 @@ import * as Icons from "@ant-design/icons";
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { findAllBreadcrumb, getOpenKeys, handleRouter, searchRoute } from '@/utils'
+import { changeMenu, findAllBreadcrumb, getOpenKeys, handleRouter, searchRoute } from '@/utils'
 import Logo from './logo'
 import { getMenuList } from '@/api/modules/menu';
 import './index.scss'
+import { BASE_MENU } from '@/config';
 
 const LayoutMenu = () => {
   const dispatch = useDispatch()
@@ -95,10 +96,31 @@ const LayoutMenu = () => {
     }
   }
 
+  const routeData = useSelector((state: any) => state.global.routeData)
+  const getMenu = async () => {
+    setLoading(true);
+    try {
+      const backMenu = changeMenu(routeData)
+      console.log('backroutes: ', backMenu);
+      const all: Menu.MenuOptions[] = [BASE_MENU, ...backMenu]
+      setMenuList(deepLoopFloat(all));
+      // 存储处理过后的所有面包屑导航栏到 redux 中
+      dispatch(setBreadcrumbList(findAllBreadcrumb(all)));
+      // 把路由菜单处理成一维数组，存储到 redux 中，做菜单权限判断
+      const dynamicRouter = handleRouter(all);
+      dispatch(setAuthRouter(dynamicRouter));
+      dispatch(setMenuListAction(all));
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  }
   useEffect(() => {
-    getMenuData();
+    // getMenuData();
+    getMenu();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [routeData]);
 
   // 点击当前菜单跳转页面
   const navigate = useNavigate();

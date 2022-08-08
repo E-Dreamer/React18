@@ -11,7 +11,8 @@ export interface ThemeConfigProp {
 interface State {
   token: string;
   authRouter: string[];
-  allRouter: RouteObject[];
+  routeData: BackStageRoute[];
+  allRouter:RouteObject[];
   authButtons: {
     [propName: string]: any;
   };
@@ -27,6 +28,8 @@ const initialState: State = {
   authRouter: [],
   authButtons: {},
   allRouter: [],
+  // 后端返回的路由数据
+  routeData:[],
   userInfo: "",
   assemblySize: "middle",
   language: "",
@@ -75,12 +78,15 @@ const tokenSlice = createSlice({
     },
     setAllRouter(state, action) {
       state.allRouter = action.payload;
+    },
+    setRouteData(state,action){
+      state.routeData = action.payload
     }
   },
   extraReducers: {
     [fetchAllRouters.fulfilled](state, { payload }) {
       console.log('成功了 获取后台路由');
-      state.allRouter = payload;
+      state.routeData = payload;
     },
     [fetchAllRouters.rejected](err){
       console.log(err);
@@ -89,7 +95,7 @@ const tokenSlice = createSlice({
 })
 
 export const { setToken, setAuthRouter, setAuthButtons,
-  setWeakOrGray, setDark, setLanguage, setAssemblySize, setAllRouter } = tokenSlice.actions
+  setWeakOrGray, setDark, setLanguage, setAssemblySize, setRouteData,setAllRouter } = tokenSlice.actions
 
 
 export default tokenSlice.reducer

@@ -1,7 +1,7 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2022-08-04 15:51:34
- * @LastEditTime: 2022-08-05 11:41:38
+ * @LastEditTime: 2022-08-08 16:18:11
  * @LastEditors: E-Dreamer
  * @Description: 
  */
@@ -15,13 +15,14 @@ import { setTabsList } from '@/store/tabs'
 import { HOME_URL } from '@/config'
 import { useLocation, useNavigate } from "react-router-dom";
 import { searchRoute } from "@/utils";
-import { rootRouter } from "@/router";
+// import { rootRouter } from "@/router";
 import MoreButton from "./MoreButton";
 import './index.scss'
 
 const LayoutTabs = (props: any) => {
   // const { tabsList } = props;
   const tabsList = useSelector((state: any) => state.tabs.tabsList)
+  const allRouter = useSelector((state: any) => state.global.allRouter)
   const dispatch = useDispatch()
   const { TabPane } = Tabs;
   const { pathname } = useLocation();
@@ -36,7 +37,7 @@ const LayoutTabs = (props: any) => {
 
   // add tabs
   const addTabs = () => {
-    const route = searchRoute(pathname, rootRouter);
+    const route = searchRoute(pathname, allRouter);
     let newTabsList = JSON.parse(JSON.stringify(tabsList));
     if (tabsList.every((item: any) => item.path !== route.path)) {
       newTabsList.push({ title: route.meta!.title, path: route.path });

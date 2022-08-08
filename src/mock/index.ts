@@ -57,24 +57,24 @@ const routes = Mock.mock('/api/AllRoutes','get',{
   success:true,
   message:'成功',
   data:[
-    {
-      path: '/home',
-      icon: 'HomeOutlined',
-      title: '首页',
-      show:true,
-      components:'/home/index.tsx',
-      parent:LAYOUT_KEY,
-      meta: {
-        requiresAuth: true,
-        title: "首页",
-        key: "home"
-      }
-    },
+    // {
+    //   path: '/home',
+    //   icon: 'HomeOutlined',
+    //   title: '首页',
+    //   show:true,
+    //   components:'/home/index.tsx',
+    //   parent:LAYOUT_KEY,
+    //   meta: {
+    //     requiresAuth: true,
+    //     title: "首页",
+    //     key: "home"
+    //   }
+    // },
     {
       path:'/ceshi',
       icon:'DropboxOutlined',
       show:true,
-      components:'/ceshi/index.tsx',
+      components:'ceshi/index.tsx',
       parent:LAYOUT_KEY,
       title:'测试',
       meta: {
