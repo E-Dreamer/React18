@@ -63,7 +63,12 @@ const routes = Mock.mock('/api/AllRoutes','get',{
       title: '首页',
       show:true,
       components:'/home/index.tsx',
-      parent:LAYOUT_KEY
+      parent:LAYOUT_KEY,
+      meta: {
+        requiresAuth: true,
+        title: "首页",
+        key: "home"
+      }
     },
     {
       path:'/ceshi',
@@ -71,7 +76,12 @@ const routes = Mock.mock('/api/AllRoutes','get',{
       show:true,
       components:'/ceshi/index.tsx',
       parent:LAYOUT_KEY,
-      title:'测试'
+      title:'测试',
+      meta: {
+        requiresAuth: true,
+        title: "测试",
+        key: "ceshi"
+      }
     },
     {
       children: [
@@ -81,13 +91,19 @@ const routes = Mock.mock('/api/AllRoutes','get',{
           isLink: "https://github.com/HalseySpicy/Hooks-Admin",
           path: "",
           title: "GitHub 仓库",
+          parent:'link'
         }
       ],
       icon: "PaperClipOutlined",
       path: "/link",
       title: "外部链接",
       parent:LAYOUT_KEY,
-      show:true
+      show:true,
+      meta: {
+        requiresAuth: true,
+        title: "外部链接",
+        key: "link"
+      }
     }
   ]
 })

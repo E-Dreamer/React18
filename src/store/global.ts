@@ -1,7 +1,7 @@
 import { RouteObject } from '@/config/interface';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { SizeType } from 'antd/lib/config-provider/SizeContext';
-import { getRoutes } from '@/api/modules/menu'
+// import { getRoutes } from '@/api/modules/menu'
 /* themeConfigProp */
 export interface ThemeConfigProp {
   primary: string;
@@ -41,13 +41,17 @@ const initialState: State = {
   }
 }
 
-// const fetchAllRouters:any = createAsyncThunk('global/fetchAllRouters',async ()=>{
-//   let {data}= await getRoutes()
-//   return data;
+// export const fetchAllRouters = createAsyncThunk('global/fetchAllRouters', async () => {
+//   try {
+//     let { data } = await getRoutes()
+//     return data;
+//   } catch (err) {
+//     console.log(err);
+//     return false;
+//   }
 // })
-export const tokenSlice = createSlice({
+const tokenSlice = createSlice({
   name: 'global',
-  // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
     setToken: (state, action) => {

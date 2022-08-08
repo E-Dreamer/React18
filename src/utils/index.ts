@@ -1,7 +1,7 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2022-08-03 15:09:04
- * @LastEditTime: 2022-08-05 10:12:34
+ * @LastEditTime: 2022-08-08 09:11:41
  * @LastEditors: E-Dreamer
  * @Description: 
  */
@@ -39,6 +39,24 @@ export const searchRoute = (path: string, routes: RouteObject[] = []): RouteObje
   }
   return result;
 };
+/**
+ * @description: 将后端给的路由 转成 RouteObject匹配的 用于useRoutes
+ * @param {*} routeList
+ * @return {*}
+ */
+export function changeRoute(routeList: any[], newArr: any[] = []): RouteObject[] {
+  routeList.forEach(i => {
+    newArr.push({
+      children: i.children.length ? changeRoute(i.children, i.children = []) : [],
+      element: i.element,
+      path: i.path,
+      meta: i.meta,
+      isLink: i.isLink
+    })
+  })
+  return newArr
+}
+
 /**
  * @description 获取需要展开的 subMenu
  * @param {String} path 当前访问地址

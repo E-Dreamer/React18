@@ -1,7 +1,7 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2022-08-03 14:58:00
- * @LastEditTime: 2022-08-05 10:17:02
+ * @LastEditTime: 2022-08-08 09:24:22
  * @LastEditors: E-Dreamer
  * @Description: 
  */
@@ -13,7 +13,7 @@ import { checkStatus } from "./helper/checkStatus";
 import { ResultEnum } from '@/utils/httpEnum'
 import store from '@/store/index'
 import { setToken } from "@/store/global";
-import { tryHideFullScreenLoading,showFullScreenLoading } from '@/components/Loading/serviceLoading'
+import { tryHideFullScreenLoading, showFullScreenLoading } from '@/components/Loading/serviceLoading'
 
 const axiosCanceler = new AxiosCanceler();
 
@@ -54,7 +54,6 @@ class RequestHttp {
       const token: string = store.getState().global.token;
       return { ...config, headers: { ...config.headers, "x-access-token": token } };
     }, (error: AxiosError) => {
-      console.log('error: ', error);
       return Promise.reject(error);
     })
 
@@ -93,7 +92,7 @@ class RequestHttp {
         // 根据响应的错误状态码，做不同的处理
         if (response) checkStatus(response.status);
         // 服务器结果都没有返回(可能服务器错误可能客户端断网) 断网处理:可以跳转到断网页面
-        if (!window.navigator.onLine) window.location.hash = "/500";
+        if (!window.navigator.onLine) window.location.hash = "/404";
         return Promise.reject(error);
       })
   }

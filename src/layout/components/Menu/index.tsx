@@ -1,7 +1,7 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2022-08-04 15:02:30
- * @LastEditTime: 2022-08-05 15:10:49
+ * @LastEditTime: 2022-08-08 09:37:40
  * @LastEditors: E-Dreamer
  * @Description: 
  */
@@ -88,14 +88,16 @@ const LayoutMenu = () => {
       const dynamicRouter = handleRouter(data);
       dispatch(setAuthRouter(dynamicRouter));
       dispatch(setMenuListAction(data));
+    } catch (err) {
+      console.log(err);
     } finally {
       setLoading(false);
     }
-  };
-  
+  }
+
   useEffect(() => {
     getMenuData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // 点击当前菜单跳转页面

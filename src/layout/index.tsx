@@ -1,7 +1,7 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2022-08-04 10:20:13
- * @LastEditTime: 2022-08-05 10:37:47
+ * @LastEditTime: 2022-08-08 09:38:11
  * @LastEditors: E-Dreamer
  * @Description: 
  */
@@ -28,8 +28,12 @@ const LayoutIndex = (props: any) => {
 
   // 获取按钮权限列表
   const getAuthButtonsList = async () => {
-    const { data } = await getAuthorButtons();
-    dispatch(setAuthButtons(data));
+    try {
+      const { data } = await getAuthorButtons();
+      dispatch(setAuthButtons(data));
+    } catch (err) {
+      console.log(err)
+    }
   };
 
   // 监听窗口大小变化

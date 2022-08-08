@@ -1,7 +1,7 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2022-08-04 09:04:31
- * @LastEditTime: 2022-08-04 15:55:37
+ * @LastEditTime: 2022-08-05 15:40:37
  * @LastEditors: E-Dreamer
  * @Description: 
  */
@@ -14,6 +14,6 @@ export const loginApi = (params: Login.ReqLoginForm) => {
 
 
 // * 获取按钮权限
-export const getAuthorButtons = () => {
+export function getAuthorButtons() {
 	return http.get<Login.ResAuthButtons>(`/auth/buttons`);
 };
