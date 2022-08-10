@@ -37,3 +37,7 @@ declare interface BackStageRoute {
   key?: string,
   meta?: { [propsName: string]: any }
 }
+
+declare type EmitType = (event: string, ...args: any[]) => void;
+
+declare type Recordable<T = any> = Record<string, T>;

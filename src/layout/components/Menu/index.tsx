@@ -1,7 +1,7 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2022-08-04 15:02:30
- * @LastEditTime: 2022-08-08 16:19:52
+ * @LastEditTime: 2022-08-10 16:08:14
  * @LastEditors: E-Dreamer
  * @Description: 
  */
@@ -77,6 +77,8 @@ const LayoutMenu = () => {
   const [menuList, setMenuList] = useState<MenuItem[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
+  //后端只获取菜单
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const getMenuData = async () => {
     setLoading(true);
     try {
@@ -97,6 +99,7 @@ const LayoutMenu = () => {
   }
 
   const routeData = useSelector((state: any) => state.global.routeData)
+  // 后端生成路由 通过路由生成菜单
   const getMenu = async () => {
     setLoading(true);
     try {

@@ -1,7 +1,7 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2022-08-03 14:58:00
- * @LastEditTime: 2022-08-08 10:40:44
+ * @LastEditTime: 2022-08-09 10:16:40
  * @LastEditors: E-Dreamer
  * @Description: 
  */
@@ -13,6 +13,7 @@ import { checkStatus } from "./helper/checkStatus";
 import { ResultEnum } from '@/utils/httpEnum'
 import store from '@/store/index'
 import { setToken } from "@/store/global";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { tryHideFullScreenLoading, showFullScreenLoading } from '@/components/Loading/serviceLoading'
 
 const axiosCanceler = new AxiosCanceler();

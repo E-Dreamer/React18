@@ -1,28 +1,15 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2022-08-03 15:09:04
- * @LastEditTime: 2022-08-08 16:02:14
+ * @LastEditTime: 2022-08-09 10:05:45
  * @LastEditors: E-Dreamer
  * @Description: 
  */
 
 import { TOKEN_KEY } from "@/config";
 import { RouteObject } from "@/config/interface";
-import { Menu } from "antd";
 
-/**
- * @description: 判断值是否未某个类型
- */
-export function is(val: unknown, type: string) {
-  return toString.call(val) === `[object ${type}]`;
-}
-/**
- * @description:  是否为函数
- */
-export function isFunction<T = Function>(val: unknown): val is T {
-  return is(val, "Function");
-}
-
+import { isObject } from "./is";
 /**
  * @description 递归查询对应的路由
  * @param {String} path 当前访问地址
@@ -205,4 +192,18 @@ export function setToken(token: string, rememberMe: any) {
 
 export function removeToken() {
   return localStorage.removeItem(TOKEN_KEY)
+}
+
+/**
+ * @description: 深度合并
+ * @param {any} src
+ * @param {any} target
+ * @return {*}
+ */
+export function deepMerge<T = any>(src: any = {}, target: any = {}): T {
+  let key: string;
+  for (key in target) {
+    src[key] = isObject(src[key]) ? deepMerge(src[key], target[key]) : (src[key] = target[key]);
+  }
+  return src;
 }

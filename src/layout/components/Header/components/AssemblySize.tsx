@@ -2,7 +2,7 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2022-08-04 16:07:15
- * @LastEditTime: 2022-08-05 15:20:18
+ * @LastEditTime: 2022-08-10 16:02:49
  * @LastEditors: E-Dreamer
  * @Description: 
  */
@@ -10,9 +10,9 @@
 import { setAssemblySize } from "@/store/global";
 import { Dropdown, Menu } from "antd";
 
-import {  useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 const AssemblySize = (props: any) => {
-  const { assemblySize } = useSelector((state:any)=> state.global);
+  const assemblySize = useSelector((state: any) => state.global.assemblySize);
   const dispatch = useDispatch()
   // 切换组件大小
   const onClick = (e: MenuInfo) => {

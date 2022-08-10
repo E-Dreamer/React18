@@ -2,12 +2,12 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2022-08-03 15:07:56
- * @LastEditTime: 2022-08-08 09:28:41
+ * @LastEditTime: 2022-08-09 10:14:37
  * @LastEditors: E-Dreamer
  * @Description: 
  */
+import { isFunction } from "@/utils/is";
 import axios, { AxiosRequestConfig, Canceler } from "axios";
-import { isFunction } from "@/utils/index";
 import qs from 'qs'
 // * 声明一个 Map 用于存储每个请求的标识 和 取消函数
 let pendingMap = new Map<string, Canceler>();
