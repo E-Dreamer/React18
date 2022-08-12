@@ -1,16 +1,16 @@
 // import { FormInstance } from 'antd/es/form/Form';
-import { ReactNode } from 'react';
+import { ReactNode, Ref } from 'react';
 import { SizeType } from 'antd/lib/config-provider/SizeContext';
 import { NamePath, ScrollOptions } from 'antd/lib/form/interface';
 import { ColEx, ComponentType } from './index';
-import { FormInstance, RuleObject } from "antd/lib/form";
+import { FormInstance, FormListFieldData, RuleObject } from "antd/lib/form";
 import { ButtonProps, RowProps, TooltipProps } from 'antd';
 import { ValidateStatus } from 'antd/lib/form/FormItem';
 
 export type Rule = RuleObject & {
   trigger?: 'blur' | 'change' | ['change', 'blur'];
 };
-export type RegisterFn = () => FormProps & {methods:FormActionType,form:FormInstance<any>}
+export type RegisterFn = () => FormProps & { methods: FormActionType, form: FormInstance<any>, formRef: Ref<any> }
 export type UseFormReturnType = [RegisterFn, FormActionType];
 
 export interface RenderCallbackParams {
@@ -36,7 +36,7 @@ export type FormAttr = {
   scrollToFirstError?: boolean | object
   size?: SizeType;
   validateTrigger?: string | string[];
-  onFieldsChange?: (changedFields: NamePath[], allFields: NamePath[]) => void;
+  onFieldsChange?: (changedFields: any[], allFields: any[]) => void;
   onFinish?: (value: any) => void;
   onFinishFailed?: ({ values, errorFields, outOfDate }: any) => void;
   onValuesChange?: (changedValues: any, allValues: any) => void;

@@ -1,7 +1,7 @@
 import { Ref } from 'react';
 import { FormSchema } from './../types/form';
 interface useAutoFoucsType {
-  autoFocusFirstItem: boolean;
+  autoFocusFirstItem?: boolean;
   schemas: FormSchema[];
   formRef: Ref<any>;
 }

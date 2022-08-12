@@ -1,20 +1,27 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2022-08-09 09:59:35
- * @LastEditTime: 2022-08-12 16:40:11
+ * @LastEditTime: 2022-08-12 17:20:59
  * @LastEditors: E-Dreamer
  * @Description:
  */
 import { Col, Form, Row } from 'antd'
-import React, { ComponentClass, FunctionComponent } from 'react'
+import React, { ComponentClass, FunctionComponent, ReactNode } from 'react'
 import './index.scss'
 import { componentMap } from './componentMap'
 import PropTypes from 'prop-types'
 import FormAction from './components/FormAction'
 import { useAutoFoucs } from './hooks/useAutoFocus'
 import { isFunction } from '@/utils/is'
+import { RegisterFn } from './types/form'
 
-const BasicForm = (props: any) => {
+
+type BasicFormProps = {
+  children: ReactNode;
+  register: RegisterFn;
+  submit: (value: any) => void;
+}
+const BasicForm = (props: BasicFormProps) => {
   const { children, register, submit } = props
 
   const { methods, ...argProps } = register()
