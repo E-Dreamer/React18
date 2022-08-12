@@ -1,7 +1,7 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2022-08-09 09:59:35
- * @LastEditTime: 2022-08-10 15:48:21
+ * @LastEditTime: 2022-08-12 16:40:11
  * @LastEditors: E-Dreamer
  * @Description:
  */
@@ -10,13 +10,50 @@ import React, { ComponentClass, FunctionComponent } from 'react'
 import './index.scss'
 import { componentMap } from './componentMap'
 import PropTypes from 'prop-types'
+import FormAction from './components/FormAction'
+import { useAutoFoucs } from './hooks/useAutoFocus'
+import { isFunction } from '@/utils/is'
 
 const BasicForm = (props: any) => {
-  const { children, register } = props
+  const { children, register, submit } = props
 
-  const { form, FormAttr, schemas, rowProps } = register()
+  const { methods, ...argProps } = register()
+
+  const {
+    schemas,
+    autoFocusFirstItem,
+    formRef,
+    form,
+    formAttr,
+    rowProps,
+    formActionProps,
+  } = argProps
+
+  const handlerSubmit = async () => {
+    const { submitFunc } = argProps
+    if (submitFunc && isFunction(submitFunc)) {
+      await submitFunc()
+      return;
+    }
+    if (!form) return;
+    try {
+      await methods.validateFields();
+      const res = methods.getFieldsValue(true)
+      // 
+      submit(res)
+    } catch (err: any) {
+      throw new Error(err);
+    }
+  }
+
+  const handleReset = () => {
+    methods.resetFields()
+  }
+
+  useAutoFoucs({ schemas, autoFocusFirstItem, formRef })
+
   return (
-    <Form {...FormAttr} className="basic-form" form={form}>
+    <Form {...formAttr} className="basic-form" form={form} ref={formRef}>
       <Row {...rowProps}>
         {/* 默认插槽 */}
         {children}
@@ -29,6 +66,7 @@ const BasicForm = (props: any) => {
                 label={i.label}
                 key={index}
                 rules={i.rules}
+                required={i.required}
                 {...i.itemProps}
               >
                 {React.createElement(
@@ -39,27 +77,18 @@ const BasicForm = (props: any) => {
             </Col>
           )
         })}
+        <FormAction {...formActionProps} submitAction={handlerSubmit} resetAction={handleReset} />
       </Row>
     </Form>
   )
 }
 
 BasicForm.propTypes = {
-  schemas: PropTypes.array,
-  FormAttr: PropTypes.object,
   register: PropTypes.func,
-  rowProps: PropTypes.object,
+  submit: PropTypes.func,
 }
-
 BasicForm.defaultProps = {
-  schemas: [],
-  FormAttr: {
-    labelCol: { span: 4 },
-    wrapperCol: { span: 18 },
-    layout: 'inline',
-  },
-  rowProps: {
-    gutter: 20,
-  },
+  register: () => ({}),
+  submit: () => ({}),
 }
 export default BasicForm

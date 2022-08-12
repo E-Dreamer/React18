@@ -16,6 +16,7 @@
     "@types/react-router-dom": "^5.3.3",
     "antd": "4.22.3",
     "axios": "^0.27.2",
+    "dayjs": "^1.11.4",
     "mockjs": "^1.1.0",
     "nprogress": "^0.2.0",
     "prop-types": "^15.8.1",

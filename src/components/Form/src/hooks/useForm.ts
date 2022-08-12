@@ -1,32 +1,59 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2022-08-09 15:07:25
- * @LastEditTime: 2022-08-10 16:05:50
+ * @LastEditTime: 2022-08-12 16:38:40
  * @LastEditors: E-Dreamer
- * @Description: 
+ * @Description:
  */
-import { FormActionType, UseFormReturnType, RegisterFn } from './../types/form';
-import { Form } from "antd";
-import { FormProps } from './../types/form';
-import { useEffect, useState } from 'react';
+import { FormActionType, UseFormReturnType, RegisterFn, FormProps, FormSchema } from './../types/form'
+import { Form } from 'antd'
+import React, { useState } from 'react'
+import { useFormValues } from './useFormValues'
+import { deepClone, deepMerge } from '@/utils'
+import { isArray, isObject, isString } from '@/utils/is'
 
-const useForm = (props: FormProps): UseFormReturnType => {
+// 默认值
+let defaultProps: FormProps = {
+  formAttr: {
+    labelCol: { span: 4 },
+    wrapperCol: { span: 18 },
+    layout: 'inline',
+  },
+  schemas: [],
+  rowProps: {
+    gutter: 20,
+  },
+  transformDateFunc: (date) => {
+    return date?.format?.('YYYY-MM-DD HH:mm:ss') ?? date
+  },
+}
+
+const useForm = (obj: FormProps): UseFormReturnType => {
+  const props = Object.assign(defaultProps, obj)
+
   const [form] = Form.useForm()
 
-  const { FormAttr, schemas, rowProps } = props;
+  const formRef = React.createRef()
 
-  const [attr, setAttr] = useState(FormAttr)
+  const { handleFormValues } = useFormValues({ props })
 
-  const register: RegisterFn = (() => {
-    return { form, schemas, FormAttr: attr, rowProps }
-  })
+  const { schemas, ...argProps } = props;
 
-  useEffect(() => {
-    console.log(attr, '最新的attr')
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [attr])
+  const [formProps, setFormProps] = useState(argProps)
 
+  const [schemaState, setSchemaState] = useState(schemas)
 
+  const schemaList: FormSchema[] = deepClone(schemaState)
+
+  const register: RegisterFn = () => {
+    return {
+      form,
+      formRef,
+      ...formProps,
+      schemas: schemaState,
+      methods
+    }
+  }
   const methods: FormActionType = {
     // * form表单自带方法
     scrollToField: (name, options) => {
@@ -34,7 +61,7 @@ const useForm = (props: FormProps): UseFormReturnType => {
     },
     // getFieldsValue(true) 时返回所有值
     getFieldsValue: (nameList, filterFunc) => {
-      return nameList && form.getFieldsValue(nameList, filterFunc)
+      return handleFormValues(form.getFieldsValue(nameList, filterFunc))
     },
     setFieldsValue: (value) => {
       return form.setFieldsValue(value)
@@ -48,15 +75,96 @@ const useForm = (props: FormProps): UseFormReturnType => {
     resetFields: (field) => {
       return form.resetFields(field)
     },
-    //* 自定义方法
+    // 修改传递的属性
     setProps: (obj) => {
-      setAttr((prevState: any) => {
-        return { ...prevState, ...obj }
+      setFormProps((prevState: any) => {
+        return {
+          ...prevState,
+          ...obj
+        }
       })
+    },
+    // 移除某个field
+    removeSchemaByFiled: (fields) => {
+      if (!fields) {
+        return;
+      }
+      let fieldList: string[] = isString(fields) ? [fields] : fields;
+      if (isString(fields)) {
+        fieldList = [fields];
+      }
+      for (const field of fieldList) {
+        if (isString(field)) {
+          const index = schemaList.findIndex((schema) => schema.field === field);
+          if (index !== -1) {
+            schemaList.splice(index, 1);
+            setSchemaState(schemaList)
+          }
+        }
+      }
+    },
+    // 添加field
+    appendSchemaByField: (schema, prefixField, first = false) => {
+      const index = schemaList.findIndex((schema) => schema.field === prefixField);
+      if (!prefixField || index === -1 || first) {
+        first ? schemaList.unshift(schema) : schemaList.push(schema);
+        setSchemaState(schemaList)
+        return;
+      }
+      if (index !== -1) {
+        schemaList.splice(index + 1, 0, schema);
+      }
+      setSchemaState(schemaList)
+    },
+    // 重置schemas
+    resetSchema: (data) => {
+      let updateData: FormSchema[] = [];
+      if (isObject(data)) {
+        updateData.push(data as FormSchema)
+      }
+      if (isArray(data)) {
+        updateData = [...data]
+      }
+      const hasField = updateData.every(
+        (item) => item.component === 'Divider' || (Reflect.has(item, 'field') && item.field),
+      );
+
+      if (!hasField) {
+        throw new Error('All children of the form schemas array that need to be updated must contain the `field` field');
+      }
+      setSchemaState(updateData as FormSchema[])
+    },
+    // 更新schemas
+    updateSchema: (data) => {
+      let updateData: Partial<FormSchema>[] = [];
+      if (isObject(data)) {
+        updateData.push(data as FormSchema);
+      }
+      if (isArray(data)) {
+        updateData = [...data];
+      }
+      const hasField = updateData.every(
+        (item) => item.component === 'Divider' || (Reflect.has(item, 'field') && item.field),
+      );
+      if (!hasField) {
+        throw new Error('All children of the form schemas array that need to be updated must contain the `field` field');
+      }
+      const schema: FormSchema[] = [];
+      updateData.forEach(item => {
+        schemaList.forEach(val => {
+          if (item.field === val.field) {
+            const newSchema = deepMerge(val, item);
+            schema.push(newSchema as FormSchema);
+          } else {
+            schema.push(val);
+          }
+        })
+      })
+      setSchemaState(schema)
     }
   }
+
   return [register, methods]
 }
 
-
-export default useForm;
+export default useForm

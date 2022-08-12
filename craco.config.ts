@@ -5,6 +5,9 @@ module.exports = {
   webpack:{
     alias:{
       '@':resolve('src')
+    },
+    plugins:{
+      
     }
   },
   deServer:{

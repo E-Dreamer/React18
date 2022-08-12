@@ -41,3 +41,5 @@ declare interface BackStageRoute {
 declare type EmitType = (event: string, ...args: any[]) => void;
 
 declare type Recordable<T = any> = Record<string, T>;
+
+declare type Nullable<T> = T | null;

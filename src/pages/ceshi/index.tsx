@@ -1,7 +1,7 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2022-08-05 10:24:22
- * @LastEditTime: 2022-08-10 15:04:16
+ * @LastEditTime: 2022-08-12 16:43:11
  * @LastEditors: E-Dreamer
  * @Description: 
  */
@@ -19,6 +19,8 @@ const Ceshi = () => {
       colProps: {
         span: 8,
       },
+      required: true,
+      rules: [{ required: true, message: '请填写' }],
       componentProps: {
         placeholder: '自定义placeholder',
         onChange: (e: any) => {
@@ -110,68 +112,70 @@ const Ceshi = () => {
             value: '2',
           },
         ],
+        onChange: (e: any) => {
+          console.log(e);
+          updateSchema({
+            field: 'field2',
+            componentProps: {
+              disabled: true
+            }
+          })
+        },
       },
     },
   ]
-
-  const [register, { setFieldsValue, submit, getFieldsValue, setProps }] = useForm({
-    schemas: FormItem,
-    FormAttr: {
-      name: 'ceshi',
-      // layout: 'inline',
-      labelCol: { span: 6 },
-      wrapperCol: { span: 18 },
-      initialValues: {
-        field1: 100,
-        field2: '第二个输入框'
-      }
-    },
-    rowProps: {
-      gutter: 10
+  let attr = {
+    name: 'ceshi',
+    labelCol: { span: 6 },
+    wrapperCol: { span: 18 },
+    initialValues: {
+      field1: 100,
+      field2: '第二个输入框'
     }
-  })
+  }
+  const [register, { setFieldsValue, getFieldsValue,
+    setProps, removeSchemaByFiled, updateSchema }] = useForm({
+      schemas: FormItem,
+      formAttr: attr,
+      rowProps: {
+        gutter: 10
+      },
+      fieldMapToTime: [['fieldTime', ['startTime', 'endTime'], 'YYYY-MM-DD']],
+      formActionProps: {
+      }
+    })
   const setField1 = () => {
     setFieldsValue({
       field1: 1000
     })
   }
   const setAttr = () => {
-    setProps({ layout: 'horizontal',labelCol: { span: 6 },
-    wrapperCol: { span: 10 }, })
-    FormItem[1].componentProps = {
-      disabled: true
-    };
+    setProps({
+      formAttr: {
+        layout: 'horizontal', labelCol: { span: 6 },
+        wrapperCol: { span: 10 },
+      }
+    })
+    updateSchema({
+      field: 'field1',
+      componentProps: {
+        disabled: true
+      }
+    })
   }
   const form1Sub = () => {
-    const form = getFieldsValue(true)
-    console.log(form)
-    submit()
-
-
+    // const form = getFieldsValue(true)
+    // console.log('form: ', form);
   }
-
-
-  const FormItem2: FormSchema[] = [
-    {
-      field: 'field1',
-      component: 'Input',
-      label: '这是字段一样的输入框',
-      colProps: {
-        span: 8,
-      },
-    },
-  ]
-
-  const [register2] = useForm({
-    schemas: FormItem2
-  })
-
+  const submit = (value: any) => {
+    console.log(value)
+  }
   return <div>
     <Button onClick={setAttr}>修改formAttr</Button>
     <Button type='primary' onClick={setField1}>修改值</Button>
     <Button onClick={form1Sub}>提交获取值</Button>
-    <BasicForm register={register2} />
-    <BasicForm register={register} />
+    <Button onClick={() => removeSchemaByFiled('field5')}>removeSchema</Button>
+    <BasicForm register={register} submit={submit} />
   </div>
 }
 export default Ceshi

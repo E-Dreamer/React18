@@ -3,14 +3,14 @@ import { ReactNode } from 'react';
 import { SizeType } from 'antd/lib/config-provider/SizeContext';
 import { NamePath, ScrollOptions } from 'antd/lib/form/interface';
 import { ColEx, ComponentType } from './index';
-import { RuleObject } from "antd/lib/form";
-import { FormItem } from './formItem';
-import { RowProps } from 'antd';
+import { FormInstance, RuleObject } from "antd/lib/form";
+import { ButtonProps, RowProps, TooltipProps } from 'antd';
+import { ValidateStatus } from 'antd/lib/form/FormItem';
 
 export type Rule = RuleObject & {
   trigger?: 'blur' | 'change' | ['change', 'blur'];
 };
-export type RegisterFn = () => void
+export type RegisterFn = () => FormProps & {methods:FormActionType,form:FormInstance<any>}
 export type UseFormReturnType = [RegisterFn, FormActionType];
 
 export interface RenderCallbackParams {
@@ -34,41 +34,49 @@ export type FormAttr = {
   preserve?: boolean;
   requiredMark?: boolean | 'optional';
   scrollToFirstError?: boolean | object
-  size?: SizeType
+  size?: SizeType;
+  validateTrigger?: string | string[];
+  onFieldsChange?: (changedFields: NamePath[], allFields: NamePath[]) => void;
+  onFinish?: (value: any) => void;
+  onFinishFailed?: ({ values, errorFields, outOfDate }: any) => void;
+  onValuesChange?: (changedValues: any, allValues: any) => void;
 }
-export interface FormProps {
-  // Form configuration rules
-  schemas: FormSchema[];
-  FormAttr?: Partial<FormAttr>;
+
+export type FormActionProps = {
+  //show 操作按鈕組
+  showActionButtonGroup?: boolean;
+  showResetButton?: boolean;
+  showSubmitButton?: boolean;
+  showAdvancedButton?: boolean;
+  resetButtonOptions?: Partial<ButtonProps>;
+  submitButtonOptions?: Partial<ButtonProps>;
+  actionColOptions?: Partial<ColEx>;
+  actionSpan?: number;
+  isAdvanced?: boolean;
+  hideAdvanceBtn?: boolean
+}
+export interface FormBaseProps {
+  // 表单attr
+  formAttr?: Partial<FormAttr>;
+  // row attr
   rowProps?: RowProps;
-  //转换时间
-  transformDateFunc?: Function;
+  //可以将 时间数组 转换成 两个参数
+  fieldMapToTime?: [string, [string, string], string?][]
+  //所有时间转换
+  transformDateFunc?: (data: any) => string;
+  // formAction 的props
+  formActionProps?: Partial<FormActionProps>;
+  // 是否开启自动获取焦点
+  autoFocusFirstItem?: boolean
+  resetFunc?: () => Promise<void>;
+  submitFunc?: () => Promise<void>;
 }
-// form 配置
-export interface FormSchema {
-  // Field name
-  field: string;
-  // Event name triggered by internal value change, default change
-  changeEvent?: string;
-  // Variable name bound to v-model Default value
-  valueField?: string;
-  // Label name
-  label: ReactNode;
-  // Auxiliary text
-  subLabel?: string;
-  // Help text on the right side of the text
-  helpMessage?:
-  | string
-  | string[]
-  | ((renderCallbackParams: RenderCallbackParams) => string | string[]);
-  // BaseHelp component props
-  helpComponentProps?: Partial<HelpComponentProps>;
-  // Label width, if it is passed, the labelCol and WrapperCol configured by itemProps will be invalid
-  labelWidth?: string | number;
-  // Disable the adjustment of labelWidth with global settings of formModel, and manually set labelCol and wrapperCol by yourself
-  disabledLabelWidth?: boolean;
-  // render component
-  component: ComponentType;
+export interface FormProps extends FormBaseProps {
+  // 传递的表单数组
+  schemas: FormSchema[];
+}
+
+export interface FormSchemaOption {
   // Component parameters
   componentProps?:
   | ((opt: {
@@ -78,55 +86,45 @@ export interface FormSchema {
     formModel: Recordable;
   }) => Recordable)
   | object;
-  // Required
-  required?: boolean | ((renderCallbackParams: RenderCallbackParams) => boolean);
-
-  suffix?: string | number | ((values: RenderCallbackParams) => string | number);
-
   // Validation rules
   rules?: Rule[];
-  // Check whether the information is added to the label
-  rulesMessageJoinLabel?: boolean;
-
-  // Reference formModelItem
-  itemProps?: Partial<FormItem>;
-
+  required?: boolean;
+  // 官网form.item 属性 
+  itemProps?: Partial<{
+    colon?: boolean;
+    dependencies?: NamePath[];
+    extra?: ReactNode;
+    getValueFromEvent?: (args: any[]) => any;
+    getValueProps?: (value: any) => any;
+    hasFeedback?: boolean;
+    help?: ReactNode;
+    hidden?: boolean;
+    htmlFor?: string;
+    messageVariables?: Record<string, string>;
+    validateStatus?: ValidateStatus,
+    tooltip?: ReactNode | TooltipProps & { icon: ReactNode }
+  }>;
   // col configuration outside formModelItem
   colProps?: Partial<ColEx>;
-
-  // 默认值
-  defaultValue?: any;
-  isAdvanced?: boolean;
-
-  // Matching details components
-  span?: number;
-
-  ifShow?: boolean | ((renderCallbackParams: RenderCallbackParams) => boolean);
-
-  show?: boolean | ((renderCallbackParams: RenderCallbackParams) => boolean);
-
-  // Render the content in the form-item tag
-  render?: (renderCallbackParams: RenderCallbackParams) => JSX.Element | string;
-
-  // Rendering col content requires outer wrapper form-item
-  renderColContent?: (renderCallbackParams: RenderCallbackParams) => JSX.Element | string;
-
-  renderComponentContent?:
-  | ((renderCallbackParams: RenderCallbackParams) => any)
-  | JSX.Element
-  | string;
-
-  // Custom slot, in from-item
-  slot?: string;
-
-  // Custom slot, similar to renderColContent
-  colSlot?: string;
-
-  dynamicDisabled?: boolean | ((renderCallbackParams: RenderCallbackParams) => boolean);
-
-  dynamicRules?: (renderCallbackParams: RenderCallbackParams) => Rule[];
+}
+// form 配置
+export interface FormSchema extends FormSchemaOption {
+  // Field name
+  field: string;
+  // Label name
+  label: ReactNode;
+  // render component
+  component: ComponentType;
 }
 
+export interface updataFormSchema extends FormSchemaOption {
+  // Field name
+  field?: string;
+  // Label name
+  label?: ReactNode;
+  // render component
+  component?: ComponentType;
+}
 
 export interface HelpComponentProps {
   maxWidth: string;
@@ -146,10 +144,14 @@ export interface HelpComponentProps {
 
 export interface FormActionType {
   scrollToField: (name: NamePath, options: ScrollOptions) => void;
-  getFieldsValue: (nameList?: NamePath[] | true, filterFunc?: (meta: { touched: boolean, validating: boolean }) => boolean) => any
+  getFieldsValue: (nameList: NamePath[] | true, filterFunc?: (meta: { touched: boolean, validating: boolean }) => boolean) => any
   setFieldsValue: (values: any) => void
   submit: () => void
   validateFields: (nameList?: NamePath[]) => Promise<void>
   resetFields: (fields?: NamePath[]) => void,
-  setProps: (obj: FormAttr) => void;
+  setProps: (obj: FormBaseProps) => void;
+  removeSchemaByFiled: (field: string | string[]) => void;
+  appendSchemaByField: (schema: FormSchema, prefixField?: string, first?: boolean) => void;
+  resetSchema: (data: FormSchema | FormSchema[]) => void;
+  updateSchema: (data: Partial<FormSchema> | Partial<FormSchema>[]) => void;
 }
