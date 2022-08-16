@@ -1,7 +1,7 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2022-08-05 10:24:22
- * @LastEditTime: 2022-08-12 16:43:11
+ * @LastEditTime: 2022-08-16 09:20:12
  * @LastEditors: E-Dreamer
  * @Description: 
  */
@@ -164,8 +164,8 @@ const Ceshi = () => {
     })
   }
   const form1Sub = () => {
-    // const form = getFieldsValue(true)
-    // console.log('form: ', form);
+    const form = getFieldsValue(true)
+    console.log('form: ', form);
   }
   const submit = (value: any) => {
     console.log(value)

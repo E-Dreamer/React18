@@ -3,7 +3,7 @@ import { ReactNode, Ref } from 'react';
 import { SizeType } from 'antd/lib/config-provider/SizeContext';
 import { NamePath, ScrollOptions } from 'antd/lib/form/interface';
 import { ColEx, ComponentType } from './index';
-import { FormInstance, FormListFieldData, RuleObject } from "antd/lib/form";
+import { FormInstance, RuleObject } from "antd/lib/form";
 import { ButtonProps, RowProps, TooltipProps } from 'antd';
 import { ValidateStatus } from 'antd/lib/form/FormItem';
 

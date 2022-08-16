@@ -1,7 +1,7 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2022-08-09 09:59:35
- * @LastEditTime: 2022-08-12 17:20:59
+ * @LastEditTime: 2022-08-16 09:23:43
  * @LastEditors: E-Dreamer
  * @Description:
  */
@@ -17,13 +17,12 @@ import { RegisterFn } from './types/form'
 
 
 type BasicFormProps = {
-  children: ReactNode;
+  children?: ReactNode;
   register: RegisterFn;
   submit: (value: any) => void;
 }
 const BasicForm = (props: BasicFormProps) => {
   const { children, register, submit } = props
-
   const { methods, ...argProps } = register()
 
   const {
@@ -93,6 +92,7 @@ const BasicForm = (props: BasicFormProps) => {
 BasicForm.propTypes = {
   register: PropTypes.func,
   submit: PropTypes.func,
+  children:PropTypes.element
 }
 BasicForm.defaultProps = {
   register: () => ({}),

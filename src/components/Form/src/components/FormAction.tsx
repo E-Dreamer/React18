@@ -1,13 +1,13 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2022-08-11 13:54:08
- * @LastEditTime: 2022-08-12 14:41:46
+ * @LastEditTime: 2022-08-16 09:35:43
  * @LastEditors: E-Dreamer
  * @Description:
  */
 import { Button, Col, Form } from 'antd'
 import PropTypes from 'prop-types'
-import { FormActionProps } from '../types/form'
+// import { FormActionProps } from '../types/form'
 // FormActionProps
 const FormAction = (props: any) => {
   const {
