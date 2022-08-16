@@ -1,7 +1,7 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2022-08-09 15:07:25
- * @LastEditTime: 2022-08-12 16:38:40
+ * @LastEditTime: 2022-08-16 10:11:05
  * @LastEditors: E-Dreamer
  * @Description:
  */
@@ -77,12 +77,9 @@ const useForm = (obj: FormProps): UseFormReturnType => {
     },
     // 修改传递的属性
     setProps: (obj) => {
-      setFormProps((prevState: any) => {
-        return {
-          ...prevState,
-          ...obj
-        }
-      })
+      let data: object = deepClone(formProps)
+      const result = deepMerge(data, obj)
+      setFormProps(result)
     },
     // 移除某个field
     removeSchemaByFiled: (fields) => {
