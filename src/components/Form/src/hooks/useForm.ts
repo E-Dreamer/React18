@@ -1,7 +1,7 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2022-08-09 15:07:25
- * @LastEditTime: 2022-08-16 10:11:05
+ * @LastEditTime: 2022-08-18 16:53:56
  * @LastEditors: E-Dreamer
  * @Description:
  */
@@ -54,6 +54,7 @@ const useForm = (obj: FormProps): UseFormReturnType => {
       methods
     }
   }
+
   const methods: FormActionType = {
     // * form表单自带方法
     scrollToField: (name, options) => {
