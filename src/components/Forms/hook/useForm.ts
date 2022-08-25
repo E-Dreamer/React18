@@ -1,21 +1,26 @@
-import { isEmpty } from "@/utils/is";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFormProps, FormActionType } from "../types/form";
 
 /*
  * @Author: E-Dreamer
  * @Date: 2022-08-19 09:45:52
- * @LastEditTime: 2022-08-19 13:56:35
+ * @LastEditTime: 2022-08-25 09:09:02
  * @LastEditors: E-Dreamer
  * @Description: 
  */
 export default function useForm(params: useFormProps) {
-  const [paramState, setParmaState] = useState(params)
+  const [formAction, setFormAction] = useState<FormActionType | null>(null)
   const register = (instance: FormActionType) => {
-    if(instance){
-      instance.setProps(paramState)
+    setFormAction(instance)
+    if (Object.keys(instance).length) {
+      instance.setProps(params)
     }
   }
+
+  useEffect(() => {
+    formAction?.setProps(params)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [params])
   const methods = {
 
   }

@@ -32,9 +32,14 @@ const menu = Mock.mock('/api/menu', 'get', {
       title: '首页'
     },
     {
-      path:'/ceshi',
-      icon:'DropboxOutlined',
-      title:'测试'
+      path: '/ceshi',
+      icon: 'DropboxOutlined',
+      title: '测试'
+    },
+    {
+      path: "/com",
+      icon: 'DropboxOutlined',
+      title: '组件'
     },
     {
       children: [
@@ -53,10 +58,10 @@ const menu = Mock.mock('/api/menu', 'get', {
 })
 
 
-const routes = Mock.mock('/api/AllRoutes','get',{
-  success:true,
-  message:'成功',
-  data:[
+const routes = Mock.mock('/api/AllRoutes', 'get', {
+  success: true,
+  message: '成功',
+  data: [
     // {
     //   path: '/home',
     //   icon: 'HomeOutlined',
@@ -71,12 +76,12 @@ const routes = Mock.mock('/api/AllRoutes','get',{
     //   }
     // },
     {
-      path:'/ceshi',
-      icon:'DropboxOutlined',
-      show:true,
-      components:'ceshi/index.tsx',
-      parent:LAYOUT_KEY,
-      title:'测试',
+      path: '/ceshi',
+      icon: 'DropboxOutlined',
+      show: true,
+      components: 'ceshi/index.tsx',
+      parent: LAYOUT_KEY,
+      title: '测试',
       meta: {
         requiresAuth: true,
         title: "测试",
@@ -84,21 +89,34 @@ const routes = Mock.mock('/api/AllRoutes','get',{
       }
     },
     {
+      path: '/com',
+      icon: 'DropboxOutlined',
+      show: true,
+      components: 'com/index.tsx',
+      parent: LAYOUT_KEY,
+      title: '组件',
+      meta: {
+        requiresAuth: true,
+        title: "组件",
+        key: "com"
+      }
+    },
+    {
       children: [
         {
-          show:true,
+          show: true,
           icon: "AppstoreOutlined",
           isLink: "https://github.com/HalseySpicy/Hooks-Admin",
           path: "",
           title: "GitHub 仓库",
-          parent:'link'
+          parent: 'link'
         }
       ],
       icon: "PaperClipOutlined",
       path: "/link",
       title: "外部链接",
-      parent:LAYOUT_KEY,
-      show:true,
+      parent: LAYOUT_KEY,
+      show: true,
       meta: {
         requiresAuth: true,
         title: "外部链接",
@@ -107,13 +125,13 @@ const routes = Mock.mock('/api/AllRoutes','get',{
     }
   ]
 })
-const buttons = Mock.mock('/api/auth/buttons','get',{
+const buttons = Mock.mock('/api/auth/buttons', 'get', {
   success: true,
   message: '成功',
-  data:{
-    useHooks:{
-      add:true,
-      edit:false
+  data: {
+    useHooks: {
+      add: true,
+      edit: false
     }
   }
 })
