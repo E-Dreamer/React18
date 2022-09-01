@@ -61,6 +61,7 @@
   "devDependencies": {
     "@types/prop-types": "^15.7.5",
     "@types/qs": "^6.9.7",
+    "circular-dependency-plugin": "^5.2.2",
     "husky": "^8.0.1",
     "lint-staged": "^13.0.3",
     "node-sass": "^7.0.1"

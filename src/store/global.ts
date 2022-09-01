@@ -1,6 +1,9 @@
 import { RouteObject } from '@/config/interface';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { SizeType } from 'antd/lib/config-provider/SizeContext';
+import axios from 'axios';
+// import {getBackRoutes} from '@/api/modules/menu';
+// console.log('getBackRoutes: ', getBackRoutes);
 /* themeConfigProp */
 export interface ThemeConfigProp {
   primary: string;
@@ -43,13 +46,10 @@ const initialState: State = {
   }
 }
 export const fetchAllRouters:any = createAsyncThunk('global/fetchAllRouters', async () => {
-  // try {
-  //   let { data } = await getRoutes()
-  //   return data;
-  // } catch (err) {
-  //   console.log(err);
-  //   return false;
-  // }
+  // let data = await getBackRoutes()
+  // return data;
+  let data = await axios.get('AllRoutes');
+  return data
 })
 const tokenSlice = createSlice({
   name: 'global',

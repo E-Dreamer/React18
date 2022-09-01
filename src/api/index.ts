@@ -1,7 +1,7 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2022-08-03 14:58:00
- * @LastEditTime: 2022-08-09 10:16:40
+ * @LastEditTime: 2022-09-01 10:03:56
  * @LastEditors: E-Dreamer
  * @Description: 
  */
@@ -13,9 +13,7 @@ import { checkStatus } from "./helper/checkStatus";
 import { ResultEnum } from '@/utils/httpEnum'
 import store from '@/store/index'
 import { setToken } from "@/store/global";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { tryHideFullScreenLoading, showFullScreenLoading } from '@/components/Loading/serviceLoading'
-
 const axiosCanceler = new AxiosCanceler();
 
 const config = {
@@ -51,7 +49,7 @@ class RequestHttp {
       // * 将当前请求添加到 pending 中
       axiosCanceler.addPending(config);
       // * 如果当前请求不需要显示 loading,在api服务中通过指定的第三个参数: { headers: { noLoading: true } }来控制不显示loading，参见loginApi
-      // config.headers!.noLoading || showFullScreenLoading();
+      config.headers!.noLoading || showFullScreenLoading();
       const token: string = store.getState().global.token;
       return { ...config, headers: { ...config.headers, "x-access-token": token } };
     }, (error: AxiosError) => {
@@ -111,5 +109,4 @@ class RequestHttp {
     return this.service.delete(url, { params, ..._object });
   }
 }
-
-export default new RequestHttp(config);
+export default new RequestHttp(config)
