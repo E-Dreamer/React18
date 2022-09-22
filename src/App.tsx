@@ -14,12 +14,11 @@ import { setRouteData, setLanguage, setAllRouter } from './store/global';
 import { getBackRoutes } from './api/modules/menu';
 
 function App(props: any) {
-  // const { themeConfig, language, assemblySize, token } = props;
-  const themeConfig = useSelector((state: any) => state.global.themeConfig)
-  const language = useSelector((state: any) => state.global.language)
-  const assemblySize = useSelector((state: any) => state.global.assemblySize)
-  const token = useSelector((state: any) => state.global.token)
-
+  // const themeConfig = useSelector((state: any) => state.global.themeConfig)
+  // const language = useSelector((state: any) => state.global.language)
+  // const assemblySize = useSelector((state: any) => state.global.assemblySize)
+  // const token = useSelector((state: any) => state.global.token)
+  const { token, themeConfig, language, assemblySize } = useSelector((state: any) => state.global)
   const dispatch = useDispatch()
 
   const { weakOrGray } = themeConfig;
@@ -44,6 +43,7 @@ function App(props: any) {
     setAntdLanguage();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [language]);
+  
 
   const getRoutes = async () => {
     try {
@@ -55,7 +55,7 @@ function App(props: any) {
       dispatch(setAllRouter([...result, ...rootRouter]))
       setBackRoutes(result)
     } catch (err) {
-      console.log(err);
+      // console.log(err)
     }
   }
   // token 改变的时候获取菜单

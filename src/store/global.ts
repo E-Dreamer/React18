@@ -15,7 +15,7 @@ interface State {
   token: string;
   authRouter: string[];
   routeData: BackStageRoute[];
-  allRouter:RouteObject[];
+  allRouter: RouteObject[];
   authButtons: {
     [propName: string]: any;
   };
@@ -32,7 +32,7 @@ const initialState: State = {
   authButtons: {},
   allRouter: [],
   // 后端返回的路由数据
-  routeData:[],
+  routeData: [],
   userInfo: "",
   assemblySize: "middle",
   language: "",
@@ -45,10 +45,10 @@ const initialState: State = {
     weakOrGray: ""
   }
 }
-export const fetchAllRouters:any = createAsyncThunk('global/fetchAllRouters', async () => {
+export const fetchAllRouters: any = createAsyncThunk('global/fetchAllRouters', async () => {
   // let data = await getBackRoutes()
   // return data;
-  let data = await axios.get('AllRoutes');
+  let data = await axios.get('AllRoutes', { headers: { "x-access-token": initialState.token } });
   return data
 })
 const tokenSlice = createSlice({
@@ -79,7 +79,7 @@ const tokenSlice = createSlice({
     setAllRouter(state, action) {
       state.allRouter = action.payload;
     },
-    setRouteData(state,action){
+    setRouteData(state, action) {
       state.routeData = action.payload
     }
   },
@@ -88,14 +88,14 @@ const tokenSlice = createSlice({
       console.log('成功了 获取后台路由');
       state.routeData = payload;
     },
-    [fetchAllRouters.rejected](err){
+    [fetchAllRouters.rejected](err) {
       console.log(err);
     }
   }
 })
 
 export const { setToken, setAuthRouter, setAuthButtons,
-  setWeakOrGray, setDark, setLanguage, setAssemblySize, setRouteData,setAllRouter } = tokenSlice.actions
+  setWeakOrGray, setDark, setLanguage, setAssemblySize, setRouteData, setAllRouter } = tokenSlice.actions
 
 
 export default tokenSlice.reducer
