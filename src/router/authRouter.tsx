@@ -1,7 +1,7 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2022-08-04 11:21:39
- * @LastEditTime: 2022-08-09 08:45:39
+ * @LastEditTime: 2022-09-28 14:39:56
  * @LastEditors: E-Dreamer
  * @Description: 
  */
@@ -12,10 +12,10 @@ import { searchRoute } from "@/utils";
 import store from "@/store";
 import { HOME_URL } from "@/config";
 
-const toLogin = ()=>{
+const toLogin = () => {
   return <Navigate to='/login' replace />
 }
-const toHome = ()=>{
+const toHome = () => {
   return <Navigate to={HOME_URL} replace />
 }
 const axiosCanceler = new AxiosCanceler();
@@ -23,14 +23,17 @@ const AuthRouter = (props: { children: JSX.Element }) => {
   const { pathname } = useLocation()
 
   const token = store.getState().global.token
+  const allRoutes = store.getState().global.allRouter
+
   // * 处理 / 是跳login 还是home
   if (pathname === '/') {
     return token ? toHome() : toLogin()
   }
-  if(pathname === '/login' && token){
+  if (pathname === '/login' && token) {
     return toHome()
   }
-  const route = searchRoute(pathname, rootRouter)
+  // const route = searchRoute(pathname, rootRouter)
+  const route = searchRoute(pathname, [...allRoutes, ...rootRouter])
 
   // * 判断当前路由是否需要访问权限(不需要权限直接放行)
   if (!route.meta?.requiresAuth) return props.children;
@@ -45,7 +48,7 @@ const AuthRouter = (props: { children: JSX.Element }) => {
   const dynamicRouter = store.getState().global.authRouter;
   // * Static Router(静态路由，必须配置首页地址，否则不能进首页获取菜单、按钮权限等数据)，获取数据的时候会loading，所有配置首页地址也没问题
   const staticRouter = [HOME_URL, "/404",];
-  const routerList =  dynamicRouter.concat(staticRouter);
+  const routerList = dynamicRouter.concat(staticRouter);
   // * 如果访问的地址没有在路由表中重定向到404页面
   // eslint-disable-next-line eqeqeq
   if (routerList.indexOf(pathname) == -1) return <Navigate to="/404" />;

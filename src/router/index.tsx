@@ -1,23 +1,29 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /*
  * @Author: E-Dreamer
  * @Date: 2022-08-03 11:01:46
- * @LastEditTime: 2022-08-09 08:54:59
+ * @LastEditTime: 2022-09-28 14:40:48
  * @LastEditors: E-Dreamer
  * @Description: 
  */
 import { RouteObject } from '@/config/interface';
 import { Navigate, useRoutes } from "react-router-dom";
-import React from 'react'
+import React, {  useEffect, useState } from 'react'
 import LayoutIndex from '@/layout';
 import { LAYOUT_KEY } from '@/config';
+
+import { getBackRoutes } from '@/api/modules/menu';
+import { useDispatch, useSelector } from 'react-redux';
+import { setRouteData, setAllRouter } from '@/store/global';
+import { changeRoute } from '@/utils'
 
 const Login = React.lazy(() => import('@/pages/login'))
 const Home = React.lazy(() => import('@/pages/home'))
 const NoFound = React.lazy(() => import('@/pages/404'))
-const Ceshi = React.lazy(() => import('@/pages/ceshi'))
+// const Ceshi = React.lazy(() => import('@/pages/ceshi'))
 
 //* 加载组件
-const lazyLoad = (path: string) => {
+const lazyLoad  = (path: string) => {
   return React.lazy(() => import(`@/pages/${path}`))
 }
 const routeItem = (item: BackStageRoute) => {
@@ -56,7 +62,7 @@ export function filterAllRoutes(routerList: BackStageRoute[], newArr: any[] = []
       let parent = findCom(newArr, item.parent)
       if (!Object.keys(parent).length) {
         newArr.push({
-          element: item.parent === LAYOUT_KEY ? <LayoutIndex /> :React.createElement(lazyLoad(item.parent)),
+          element: item.parent === LAYOUT_KEY ? <LayoutIndex /> : React.createElement(lazyLoad(item.parent)),
           key: item.parent,
           children: []
         })
@@ -95,15 +101,15 @@ export const rootRouter: RouteObject[] = [
           key: "home"
         }
       },
-      {
-        path: '/ceshi',
-        element: <Ceshi />,
-        meta: {
-          requiresAuth: true,
-          title: "测试",
-          key: "ceshi"
-        }
-      },
+      // {
+      //   path: '/ceshi',
+      //   element: <Ceshi />,
+      //   meta: {
+      //     requiresAuth: true,
+      //     title: "测试",
+      //     key: "ceshi"
+      //   }
+      // },
     ]
   },
   {
@@ -121,7 +127,27 @@ export const rootRouter: RouteObject[] = [
   }
 ]
 const Router = (props: any) => {
-  const { backRoutes } = props;
+  // const { backRoutes } = props;
+  const [backRoutes, setBackRoutes] = useState<RouteObject[]>([])
+  const dispatch = useDispatch()
+  // 获取后端路由
+  const getRoutes = async () => {
+    try {
+      const { data } = await getBackRoutes()
+      if (!data) return;
+      dispatch(setRouteData(data))
+      const result = changeRoute(filterAllRoutes(data))
+      console.log('后端返回的路由: ', result);
+      dispatch(setAllRouter([...result, ...rootRouter]))
+      setBackRoutes(result)
+    } catch (err) {
+      // console.log(err)
+    }
+  }
+  const token = useSelector((state: any) => state.global.token)
+  useEffect(() => {
+    token && getRoutes()
+  }, [token])
   const all = [...backRoutes, ...rootRouter]
   const routes = useRoutes(all);
   return routes
