@@ -1,9 +1,7 @@
-import { RouteObject } from '@/config/interface';
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+// import { RouteObject } from '@/config/interface';
+import { createSlice } from '@reduxjs/toolkit'
 import { SizeType } from 'antd/lib/config-provider/SizeContext';
-import axios from 'axios';
-// import {getBackRoutes} from '@/api/modules/menu';
-// console.log('getBackRoutes: ', getBackRoutes);
+// import axios from 'axios';
 /* themeConfigProp */
 export interface ThemeConfigProp {
   primary: string;
@@ -14,8 +12,8 @@ export interface ThemeConfigProp {
 interface State {
   token: string;
   authRouter: string[];
-  routeData: BackStageRoute[];
-  allRouter: RouteObject[];
+  // routeData: BackStageRoute[];
+  // allRouter: RouteObject[];
   authButtons: {
     [propName: string]: any;
   };
@@ -30,9 +28,9 @@ const initialState: State = {
   token: '',
   authRouter: [],
   authButtons: {},
-  allRouter: [],
-  // 后端返回的路由数据
-  routeData: [],
+  // allRouter: [],
+  // // 后端返回的路由数据
+  // routeData: [],
   userInfo: "",
   assemblySize: "middle",
   language: "",
@@ -45,12 +43,10 @@ const initialState: State = {
     weakOrGray: ""
   }
 }
-export const fetchAllRouters: any = createAsyncThunk('global/fetchAllRouters', async () => {
-  // let data = await getBackRoutes()
-  // return data;
-  let data = await axios.get('AllRoutes', { headers: { "x-access-token": initialState.token } });
-  return data
-})
+// export const fetchAllRouters: any = createAsyncThunk('global/fetchAllRouters', async () => {
+//   let data = await axios.get(process.env.REACT_APP_BASEURL +'/AllRoutes', { headers: { "x-access-token": initialState.token } });
+//   return data
+// })
 const tokenSlice = createSlice({
   name: 'global',
   initialState,
@@ -76,26 +72,26 @@ const tokenSlice = createSlice({
     setWeakOrGray(state, action) {
       state.themeConfig.weakOrGray = action.payload
     },
-    setAllRouter(state, action) {
-      state.allRouter = action.payload;
-    },
-    setRouteData(state, action) {
-      state.routeData = action.payload
-    }
+    // setAllRouter(state, action) {
+    //   state.allRouter = action.payload;
+    // },
+    // setRouteData(state, action) {
+    //   state.routeData = action.payload
+    // }
   },
-  extraReducers: {
-    [fetchAllRouters.fulfilled](state, { payload }) {
-      console.log('成功了 获取后台路由');
-      state.routeData = payload;
-    },
-    [fetchAllRouters.rejected](err) {
-      console.log(err);
-    }
-  }
+  // extraReducers: {
+  //   [fetchAllRouters.fulfilled](state, { payload }) {
+  //     console.log('成功了 获取后台路由',payload);
+  //     state.routeData = payload;
+  //   },
+  //   [fetchAllRouters.rejected](err) {
+  //     console.log(err);
+  //   }
+  // }
 })
 
 export const { setToken, setAuthRouter, setAuthButtons,
-  setWeakOrGray, setDark, setLanguage, setAssemblySize, setRouteData, setAllRouter } = tokenSlice.actions
-
+  setWeakOrGray, setDark, setLanguage, setAssemblySize,  } = tokenSlice.actions
+// setRouteData, setAllRouter
 
 export default tokenSlice.reducer

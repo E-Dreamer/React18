@@ -109,4 +109,5 @@ class RequestHttp {
     return this.service.delete(url, { params, ..._object });
   }
 }
+// eslint-disable-next-line import/no-anonymous-default-export
 export default new RequestHttp(config)

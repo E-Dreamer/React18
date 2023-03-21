@@ -2,7 +2,7 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2022-08-03 11:01:46
- * @LastEditTime: 2022-09-28 14:40:48
+ * @LastEditTime: 2023-03-21 14:17:52
  * @LastEditors: E-Dreamer
  * @Description: 
  */
@@ -14,7 +14,7 @@ import { LAYOUT_KEY } from '@/config';
 
 import { getBackRoutes } from '@/api/modules/menu';
 import { useDispatch, useSelector } from 'react-redux';
-import { setRouteData, setAllRouter } from '@/store/global';
+import { setRouteData, setAllRouter ,fetchAllRouters} from '@/store/route';
 import { changeRoute } from '@/utils'
 
 const Login = React.lazy(() => import('@/pages/login'))
@@ -130,10 +130,16 @@ const Router = (props: any) => {
   // const { backRoutes } = props;
   const [backRoutes, setBackRoutes] = useState<RouteObject[]>([])
   const dispatch = useDispatch()
+  // const routerData:RouteObject[] = useSelector((state:any)=>state.route.routerData)
+
   // 获取后端路由
   const getRoutes = async () => {
     try {
+      // dispatch(fetchAllRouters())
+      // dispatch(setAllRouter([...routerData,...rootRouter]))
+      // setBackRoutes(routerData)
       const { data } = await getBackRoutes()
+      console.log('data: ', data);
       if (!data) return;
       dispatch(setRouteData(data))
       const result = changeRoute(filterAllRoutes(data))

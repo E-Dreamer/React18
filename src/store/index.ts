@@ -14,19 +14,24 @@ import globalReducer from "./global";
 import tabsReducer from './tabs'
 import breadCrumbReducer from './breadcrumb'
 import menuReducer from './menu'
+import routeReducer from './route'
 
+// 创建reducer(拆分reducer)
 export const rootReducer = combineReducers({
   global: globalReducer,
   tabs: tabsReducer,
   menu: menuReducer,
-  breadcrumb: breadCrumbReducer
+  breadcrumb: breadCrumbReducer,
+  route:routeReducer
 })
+// redux 持久化配置
 const persistConfig = {
   key: 'root',
   storage,
   blacklist: []
 }
 const myPersistReducer = persistReducer(persistConfig, rootReducer)
+
 const store = configureStore({
   reducer: myPersistReducer,
   middleware: (getDefaultMiddleware: any) => {

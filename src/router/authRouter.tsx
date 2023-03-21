@@ -9,8 +9,8 @@ import { AxiosCanceler } from "@/api/helper/axiosCancel";
 import { useLocation, Navigate } from "react-router-dom";
 import { rootRouter } from '@/router/index'
 import { searchRoute } from "@/utils";
-import store from "@/store";
 import { HOME_URL } from "@/config";
+import { useSelector } from "react-redux";
 
 const toLogin = () => {
   return <Navigate to='/login' replace />
@@ -22,8 +22,10 @@ const axiosCanceler = new AxiosCanceler();
 const AuthRouter = (props: { children: JSX.Element }) => {
   const { pathname } = useLocation()
 
-  const token = store.getState().global.token
-  const allRoutes = store.getState().global.allRouter
+  const token = useSelector((state: any) => state.global.token)
+  const allRoutes = useSelector((state: any) => state.route.allRouter)
+  // * Dynamic Router(动态路由，根据后端返回的菜单数据生成的一维数组)
+  const dynamicRouter = useSelector((state: any) => state.global.authRouter)
 
   // * 处理 / 是跳login 还是home
   if (pathname === '/') {
@@ -44,8 +46,6 @@ const AuthRouter = (props: { children: JSX.Element }) => {
     axiosCanceler.removeAllPending();
     return toLogin()
   }
-  // * Dynamic Router(动态路由，根据后端返回的菜单数据生成的一维数组)
-  const dynamicRouter = store.getState().global.authRouter;
   // * Static Router(静态路由，必须配置首页地址，否则不能进首页获取菜单、按钮权限等数据)，获取数据的时候会loading，所有配置首页地址也没问题
   const staticRouter = [HOME_URL, "/404",];
   const routerList = dynamicRouter.concat(staticRouter);
