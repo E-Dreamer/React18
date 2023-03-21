@@ -88,19 +88,19 @@ const routes = Mock.mock('/api/AllRoutes', 'get', {
         key: "ceshi"
       }
     },
-    {
-      path: '/com',
-      icon: 'DropboxOutlined',
-      show: true,
-      components: 'com/index.tsx',
-      parent: LAYOUT_KEY,
-      title: '组件',
-      meta: {
-        requiresAuth: true,
-        title: "组件",
-        key: "com"
-      }
-    },
+    // {
+    //   path: '/com',
+    //   icon: 'DropboxOutlined',
+    //   show: true,
+    //   components: 'com/index.tsx',
+    //   parent: LAYOUT_KEY,
+    //   title: '组件',
+    //   meta: {
+    //     requiresAuth: true,
+    //     title: "组件",
+    //     key: "com"
+    //   }
+    // },
     {
       children: [
         {

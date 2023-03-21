@@ -90,6 +90,7 @@ const LayoutMenu = () => {
       // 把路由菜单处理成一维数组，存储到 redux 中，做菜单权限判断
       const dynamicRouter = handleRouter(data);
       dispatch(setAuthRouter(dynamicRouter));
+      console.log(dynamicRouter,'dynamicRouter');
       dispatch(setMenuListAction(data));
     } catch (err) {
       console.log(err);
@@ -98,7 +99,7 @@ const LayoutMenu = () => {
     }
   }
 
-  const routeData = useSelector((state: any) => state.global.routeData)
+  const routeData = useSelector((state: any) => state.route.routeData)
   // 后端生成路由 通过路由生成菜单
   const getMenu = async () => {
     setLoading(true);

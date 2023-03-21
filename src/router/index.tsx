@@ -2,7 +2,7 @@
 /*
  * @Author: E-Dreamer
  * @Date: 2022-08-03 11:01:46
- * @LastEditTime: 2023-03-21 14:17:52
+ * @LastEditTime: 2023-03-21 14:56:21
  * @LastEditors: E-Dreamer
  * @Description: 
  */
@@ -20,7 +20,8 @@ import { changeRoute } from '@/utils'
 const Login = React.lazy(() => import('@/pages/login'))
 const Home = React.lazy(() => import('@/pages/home'))
 const NoFound = React.lazy(() => import('@/pages/404'))
-// const Ceshi = React.lazy(() => import('@/pages/ceshi'))
+const Ceshi = React.lazy(() => import('@/pages/ceshi'))
+const Com = React.lazy(()=>import('@/pages/com'));
 
 //* 加载组件
 const lazyLoad  = (path: string) => {
@@ -101,15 +102,24 @@ export const rootRouter: RouteObject[] = [
           key: "home"
         }
       },
-      // {
-      //   path: '/ceshi',
-      //   element: <Ceshi />,
-      //   meta: {
-      //     requiresAuth: true,
-      //     title: "测试",
-      //     key: "ceshi"
-      //   }
-      // },
+      {
+        path: '/ceshi',
+        element: <Ceshi />,
+        meta: {
+          requiresAuth: true,
+          title: "测试",
+          key: "ceshi"
+        }
+      },
+      {
+        path:'/com',
+        element:<Com/>,
+        meta: {
+          requiresAuth: true,
+          title: "组件",
+          key: "com"
+        }
+      }
     ]
   },
   {
@@ -154,7 +164,7 @@ const Router = (props: any) => {
   useEffect(() => {
     token && getRoutes()
   }, [token])
-  const all = [...backRoutes, ...rootRouter]
+  const all = [...rootRouter,...backRoutes]
   const routes = useRoutes(all);
   return routes
 };

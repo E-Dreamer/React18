@@ -20,6 +20,7 @@ module.exports = {
     }
   },
   deServer: {
+    historyApiFallback: true, // 解决BrowserRouter路由跳转之后刷新浏览器按钮报404的情况
     proxy: {
       '/api': {
         target: 'http://localhost:3000',
